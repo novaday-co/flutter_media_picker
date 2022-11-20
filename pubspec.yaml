@@ -1,18 +1,24 @@
 name: flutter_media_picker
 description: A new Flutter package for accessing local storage medias .
 version: 0.0.1
-homepage:
+homepage: https://github.com/novaday-co/flutter_media_picker/
 
 environment:
-  sdk: '>=2.18.4 <3.0.0'
+  sdk: '>=2.18.2 <3.0.0'
   flutter: ">=1.17.0"
 
 dependencies:
+  bottom_sheet: ^3.1.1
   photo_manager: ^2.1.4
-  dropdown_button2: ^1.7.2
+  camera: ^0.10.0
+  image_cropper: ^3.0.0
   flutter:
     sdk: flutter
-  bottom_sheet: ^3.1.2
+  dropdown_button2: ^1.7.2
+  skeleton_text: ^3.0.0
+  image_picker: ^0.8.5+3
+  flutter_image_compress: ^1.1.1
+  gallery_saver: ^2.3.2
 
 dev_dependencies:
   flutter_test:
