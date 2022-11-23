@@ -1,7 +1,8 @@
+import 'package:bottom_sheet/bottom_sheet.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_media_picker/src/models/cropper_model.dart';
 import 'package:flutter_media_picker/src/widgets/media_picker_bottom_sheet.dart';
 import 'package:photo_manager/photo_manager.dart';
-import 'package:bottom_sheet/bottom_sheet.dart';
 
 class MediaPicker {
   static Future<String?> showMediaPickerModal(
@@ -10,6 +11,7 @@ class MediaPicker {
         final double? mediaWidgetWidth,
         final double? mediaHorizontalSpacing,
         final double? mediaVerticalSpacing,
+        final int? imageQualityPercentage,
         final BorderRadius? mediaBorderRadius,
         final BoxShape? mediaBoxShape,
         final List<BoxShadow>? mediaBoxShadow,
@@ -25,8 +27,11 @@ class MediaPicker {
         final TextStyle? dropDownButtonTextStyle,
         final TextStyle? dropDownItemsTextStyle,
         final Widget? mediaLoadingWidget,
+        final MediaCropper? mediaCropper,
       }) async {
-    final PermissionState ps = await PhotoManager.requestPermissionExtend(requestOption: const PermissionRequestOption(iosAccessLevel: IosAccessLevel.addOnly));
+    final PermissionState ps = await PhotoManager.requestPermissionExtend(
+        requestOption: const PermissionRequestOption(
+            iosAccessLevel: IosAccessLevel.addOnly));
     if (ps.hasAccess) {
       return await showFlexibleBottomSheet(
         context: context,
@@ -38,6 +43,7 @@ class MediaPicker {
         bottomSheetColor: backgroundColor ?? Colors.white,
         builder: (context, scrollController, offset) => MediaPickerBottomSheet(
           scrollController: scrollController,
+          mediaCropper: mediaCropper,
           backgroundColor: backgroundColor,
           mediaWidgetWidth: mediaWidgetWidth,
           headersIconsColor: headersIconsColor,
@@ -48,12 +54,14 @@ class MediaPicker {
           mediaSkeletonBaseColor: mediaSkeletonBaseColor,
           mediaFit: mediaFit,
           mediaBorder: mediaBorder,
+          imageQualityPercentage: imageQualityPercentage,
           mediaBackgroundColor: mediaBackgroundColor,
           mediaBorderRadius: mediaBorderRadius,
           mediaBoxShadow: mediaBoxShadow,
           mediaBoxShape: mediaBoxShape,
           mediaLoadingWidget: mediaLoadingWidget,
-          dropDownSelectedItemBackgroundColor: dropDownSelectedItemBackgroundColor,
+          dropDownSelectedItemBackgroundColor:
+          dropDownSelectedItemBackgroundColor,
           dropDownBackgroundColor: dropDownBackgroundColor,
           dropDownButtonTextStyle: dropDownButtonTextStyle,
           dropDownItemsTextStyle: dropDownItemsTextStyle,

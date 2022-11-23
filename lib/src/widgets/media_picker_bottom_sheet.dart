@@ -1,7 +1,16 @@
+import 'package:camera/camera.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_media_picker/src/models/cropper_model.dart';
 import 'package:flutter_media_picker/src/models/media_model.dart';
+import 'package:flutter_media_picker/src/utils/screen_size.dart';
+import 'package:flutter_media_picker/src/widgets/camera_page.dart';
+import 'package:flutter_media_picker/src/widgets/edit_image_page.dart';
+import 'package:flutter_media_picker/src/widgets/gridview_skeleton_loading.dart';
 import 'package:flutter_media_picker/src/widgets/medias_gridview.dart';
 import 'package:flutter_media_picker/src/widgets/modal_header.dart';
+import 'package:gallery_saver/gallery_saver.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:photo_manager/photo_manager.dart';
 
 class MediaPickerBottomSheet extends StatefulWidget {
@@ -30,6 +39,8 @@ class MediaPickerBottomSheet extends StatefulWidget {
   final Color? mediaSkeletonShimmerColor;
 
   final Widget? mediaLoadingWidget;
+
+  final MediaCropper? mediaCropper;
 
   final TextStyle? dropDownButtonTextStyle;
 
@@ -68,7 +79,9 @@ class MediaPickerBottomSheet extends StatefulWidget {
     this.dropDownButtonTextStyle,
     this.dropDownItemsTextStyle,
     this.dropDownSelectedItemBackgroundColor,
-    this.dropDownBackgroundColor, this.imageQualityPercentage,
+    this.dropDownBackgroundColor,
+    this.imageQualityPercentage,
+    this.mediaCropper,
   }) : super(key: key);
 
   @override
@@ -78,6 +91,8 @@ class MediaPickerBottomSheet extends StatefulWidget {
 class _MediaPickerBottomSheetState extends State<MediaPickerBottomSheet> {
   GlobalKey modalKey = GlobalKey();
   ValueNotifier<MediaState> mediaState = ValueNotifier(MediaState.success);
+  List<CameraDescription>? cameras;
+  CameraController? cameraController;
   List<AssetPathEntity> paths = [];
   List<MediaModel> medias = [];
   int selectedPathIndex = 0;
@@ -88,6 +103,7 @@ class _MediaPickerBottomSheetState extends State<MediaPickerBottomSheet> {
   @override
   void initState() {
     fetchAssetsPath();
+    initialCamera();
     super.initState();
   }
 
@@ -102,6 +118,8 @@ class _MediaPickerBottomSheetState extends State<MediaPickerBottomSheet> {
             paths: paths.map((e) => e.name).toList(),
             selectedDropDownItemIndex: selectedPathIndex,
             onChangePath: _onChangeAssetPath,
+            crossFadeState: _crossFadeState,
+            onOpenGallery: _onOpenGallery,
             headersIconsBorderColor: widget.headersIconsBorderColor,
             headersIconsColor: widget.headersIconsColor,
             dropDownButtonBackgroundColor: widget.backgroundColor,
@@ -118,11 +136,13 @@ class _MediaPickerBottomSheetState extends State<MediaPickerBottomSheet> {
                 builder: (context, state, child) {
                   switch (state) {
                     case MediaState.loading:
-                      return const SizedBox();
+                      return const GridViewSkeletonLoading();
                     default:
                       return MediasGridView(
+                        cameraController: cameraController,
                         medias: medias,
                         onSelectMedia: _onSelectMedia,
+                        onOpenCamera: _onOpenCamera,
                         scrollController: widget.scrollController,
                         loadingWidget: widget.mediaLoadingWidget,
                         mediaBackgroundColor: widget.mediaBackgroundColor,
@@ -130,7 +150,7 @@ class _MediaPickerBottomSheetState extends State<MediaPickerBottomSheet> {
                         mediaFit: widget.mediaFit,
                         mediaSkeletonBaseColor: widget.mediaSkeletonBaseColor,
                         mediaSkeletonShimmerColor:
-                            widget.mediaSkeletonShimmerColor,
+                        widget.mediaSkeletonShimmerColor,
                         boxShape: widget.mediaBoxShape,
                         borderRadius: widget.mediaBorderRadius,
                         boxShadow: widget.mediaBoxShadow,
@@ -148,8 +168,80 @@ class _MediaPickerBottomSheetState extends State<MediaPickerBottomSheet> {
     );
   }
 
+  CrossFadeState get _crossFadeState {
+    if (modalKey.currentContext != null) {
+      final obj = modalKey.currentContext?.findRenderObject() as RenderBox;
+      if (obj.size.height >= context.getScreenSize().height * 0.9) {
+        return CrossFadeState.showSecond;
+      }
+      return CrossFadeState.showFirst;
+    }
+    return CrossFadeState.showFirst;
+  }
+
+  void _onOpenGallery() async {
+    final ImagePicker picker = ImagePicker();
+    picker.pickImage(source: ImageSource.gallery).then((image) {
+      if(image != null){
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => EditImagePage(
+              title: "",
+              isFromCamera: false,
+              imageQualityPercentage: widget.imageQualityPercentage,
+              mediaCropper: widget.mediaCropper,
+              imagePath: image.path,
+            ),
+          ),
+        );
+      }
+    });
+
+  }
+
+  void _onOpenCamera() {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => CameraPage(
+            cameraController: cameraController!,
+            onCapture: () {
+              cameraController?.takePicture().then((imageFile) {
+                saveCameraImageInGallery(imageFile);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => EditImagePage(
+                      title: "",
+                      isFromCamera: true,
+                      imageQualityPercentage: widget.imageQualityPercentage,
+                      mediaCropper: widget.mediaCropper,
+                      imagePath: imageFile.path,
+                    ),
+                  ),
+                );
+              });
+            },
+          ),
+        ));
+  }
+
+  void saveCameraImageInGallery(XFile? image) async {
+    GallerySaver.saveImage(image!.path);
+  }
+
   void _onSelectMedia(int index) {
-    Navigator.pop(context,medias[index - 1].path!);
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => EditImagePage(
+            title: "",
+            mediaCropper: widget.mediaCropper,
+            imageQualityPercentage: widget.imageQualityPercentage,
+            imagePath: medias[index - 1].path!),
+      ),
+    );
   }
 
   void _onChangeAssetPath(int assetsIndex) {
@@ -163,6 +255,19 @@ class _MediaPickerBottomSheetState extends State<MediaPickerBottomSheet> {
     fetchAssetsMedias();
   }
 
+  Future<void> initialCamera() async {
+    cameras = await availableCameras();
+    if (cameras != null) {
+      cameraController = CameraController(cameras!.first, ResolutionPreset.max);
+      await cameraController!.initialize();
+    } else {
+      if (kDebugMode) {
+        print("no  camera found");
+      }
+    }
+    setState(() {});
+  }
+
   Future<void> fetchAssetsPath() async {
     mediaState.value = MediaState.loading;
     paths = await PhotoManager.getAssetPathList(type: RequestType.image);
@@ -170,7 +275,6 @@ class _MediaPickerBottomSheetState extends State<MediaPickerBottomSheet> {
   }
 
   Future<void> fetchAssetsMedias({bool loadMore = false}) async {
-    /// Check if it should fetch all medias with pagination
     if (selectedPathIndex == 0) {
       if (mediaState.value == MediaState.empty) return;
 
@@ -189,7 +293,7 @@ class _MediaPickerBottomSheetState extends State<MediaPickerBottomSheet> {
       if (mediaState.value != MediaState.failed) {
         medias.addAll(fetchedMedias);
         assetPageIndex++;
-        if(fetchedMedias.length < pageSize){
+        if (fetchedMedias.length < pageSize) {
           mediaState.value = MediaState.empty;
         }
         setState(() {});
@@ -207,7 +311,7 @@ class _MediaPickerBottomSheetState extends State<MediaPickerBottomSheet> {
       List<AssetEntity> entities = await paths[
               currentAssetIndex > 0 ? currentAssetIndex - 1 : currentAssetIndex]
           .getAssetListPaged(size: pageSize, page: assetPageIndex);
-        mediaState.value = MediaState.success;
+      mediaState.value = MediaState.success;
       return entities.map((entity) => MediaModel(assetEntity: entity)).toList();
     } catch (e) {
       mediaState.value = MediaState.failed;
@@ -220,8 +324,8 @@ class _MediaPickerBottomSheetState extends State<MediaPickerBottomSheet> {
       if (mediasLength < pageSize) {
         currentAssetIndex++;
         assetPageIndex = 0;
-        if(currentAssetIndex >= paths.length){
-          mediaState.value =MediaState.empty;
+        if (currentAssetIndex >= paths.length) {
+          mediaState.value = MediaState.empty;
         }
       } else {
         assetPageIndex++;
