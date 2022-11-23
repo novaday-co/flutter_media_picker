@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_media_picker/flutter_media_picker.dart';
 
@@ -30,8 +32,11 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  void _showMediaPickerModal() {
-    MediaPicker.showMediaPickerModal(context);
+  String? selectedImagePath;
+
+  void _showMediaPickerModal() async {
+    selectedImagePath = await MediaPicker.showMediaPickerModal(context);
+    setState(() {});
   }
 
   @override
@@ -41,9 +46,19 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: Center(
-        child: TextButton(
-          onPressed: _showMediaPickerModal,
-          child: Text("show media picker modal"),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            if(selectedImagePath != null) SizedBox(
+              height: 200,
+              width: 200,
+              child: Image.file(File(selectedImagePath!),),
+            ),
+            TextButton(
+              onPressed: _showMediaPickerModal,
+              child: const Text("show media picker modal"),
+            ),
+          ],
         ),
       ),
     );
