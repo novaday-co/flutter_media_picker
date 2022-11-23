@@ -26,6 +26,12 @@
 	<true/>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
+	<key>NSCameraUsageDescription</key>
+    <string>camera for choosing images</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>your usage description here</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>your usage description here</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
 	<key>UISupportedInterfaceOrientations</key>
