@@ -61,7 +61,7 @@ class MediaWidget extends StatelessWidget {
               case MediaState.success:
                 return Image.memory(
                   media.image!,
-                  fit: mediaFit ?? BoxFit.fill,
+                  fit: mediaFit ?? BoxFit.cover,
                 );
               default:
                 return loadingWidget ?? const SizedBox();
