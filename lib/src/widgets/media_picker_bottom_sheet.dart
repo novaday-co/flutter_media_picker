@@ -106,6 +106,11 @@ class _MediaPickerBottomSheetState extends State<MediaPickerBottomSheet> {
     initialCamera();
     super.initState();
   }
+  @override
+  void dispose() {
+    super.dispose();
+    cameraController?.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
