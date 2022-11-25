@@ -63,7 +63,7 @@ class MediaWidget extends StatelessWidget {
               case MediaState.success:
                 return Image.file(
                   File(media.path!),
-                  fit: mediaFit ?? BoxFit.fill,
+                  fit: mediaFit ?? BoxFit.cover,
                 );
               default:
                 return loadingWidget ?? const SizedBox();
