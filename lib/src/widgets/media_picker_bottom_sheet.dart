@@ -96,7 +96,7 @@ class _MediaPickerBottomSheetState extends State<MediaPickerBottomSheet> {
   List<AssetPathEntity> paths = [];
   List<MediaModel> medias = [];
   int selectedPathIndex = 0;
-  int currentAssetIndex = 0;
+  int currentPathIndex = 0;
   int assetPageIndex = 0;
   int pageSize = 20;
 
@@ -126,7 +126,8 @@ class _MediaPickerBottomSheetState extends State<MediaPickerBottomSheet> {
             dropDownItemsTextStyle: widget.dropDownItemsTextStyle,
             dropDownButtonTextStyle: widget.dropDownButtonTextStyle,
             dropDownBackgroundColor: widget.dropDownBackgroundColor,
-            dropDownSelectedItemBackgroundColor: widget.dropDownSelectedItemBackgroundColor,
+            dropDownSelectedItemBackgroundColor:
+                widget.dropDownSelectedItemBackgroundColor,
           ),
           Expanded(
             child: NotificationListener(
@@ -150,7 +151,7 @@ class _MediaPickerBottomSheetState extends State<MediaPickerBottomSheet> {
                         mediaFit: widget.mediaFit,
                         mediaSkeletonBaseColor: widget.mediaSkeletonBaseColor,
                         mediaSkeletonShimmerColor:
-                        widget.mediaSkeletonShimmerColor,
+                            widget.mediaSkeletonShimmerColor,
                         boxShape: widget.mediaBoxShape,
                         borderRadius: widget.mediaBorderRadius,
                         boxShadow: widget.mediaBoxShadow,
@@ -171,7 +172,7 @@ class _MediaPickerBottomSheetState extends State<MediaPickerBottomSheet> {
   CrossFadeState get _crossFadeState {
     if (modalKey.currentContext != null) {
       final obj = modalKey.currentContext?.findRenderObject() as RenderBox;
-      if (obj.size.height >= context.getScreenSize().height * 0.9) {
+      if (obj.size.height >= context.getScreenSize().height * 0.85) {
         return CrossFadeState.showSecond;
       }
       return CrossFadeState.showFirst;
@@ -182,7 +183,7 @@ class _MediaPickerBottomSheetState extends State<MediaPickerBottomSheet> {
   void _onOpenGallery() async {
     final ImagePicker picker = ImagePicker();
     picker.pickImage(source: ImageSource.gallery).then((image) {
-      if(image != null){
+      if (image != null) {
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -197,7 +198,6 @@ class _MediaPickerBottomSheetState extends State<MediaPickerBottomSheet> {
         );
       }
     });
-
   }
 
   void _onOpenCamera() {
@@ -208,7 +208,7 @@ class _MediaPickerBottomSheetState extends State<MediaPickerBottomSheet> {
             cameraController: cameraController!,
             onCapture: () {
               cameraController?.takePicture().then((imageFile) {
-                saveCameraImageInGallery(imageFile);
+                _saveCameraImageInGallery(imageFile);
                 Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -227,7 +227,7 @@ class _MediaPickerBottomSheetState extends State<MediaPickerBottomSheet> {
         ));
   }
 
-  void saveCameraImageInGallery(XFile? image) async {
+  void _saveCameraImageInGallery(XFile? image) async {
     GallerySaver.saveImage(image!.path);
   }
 
@@ -250,14 +250,14 @@ class _MediaPickerBottomSheetState extends State<MediaPickerBottomSheet> {
     medias.clear();
     mediaState.value = MediaState.success;
     selectedPathIndex = assetsIndex;
-    currentAssetIndex = assetsIndex;
+    currentPathIndex = assetsIndex == 0 ? assetsIndex : assetsIndex - 1;
     assetPageIndex = 0;
     fetchAssetsMedias();
   }
 
   Future<void> initialCamera() async {
     cameras = await availableCameras();
-    if (cameras != null) {
+    if (cameras != null && cameras!.isNotEmpty) {
       cameraController = CameraController(cameras!.first, ResolutionPreset.max);
       await cameraController!.initialize();
     } else {
@@ -275,19 +275,20 @@ class _MediaPickerBottomSheetState extends State<MediaPickerBottomSheet> {
   }
 
   Future<void> fetchAssetsMedias({bool loadMore = false}) async {
+    if (mediaState.value == MediaState.empty) return;
+
     if (selectedPathIndex == 0) {
-      if (mediaState.value == MediaState.empty) return;
-
-      List<MediaModel> fetchedMedias = await fetchMediasFromStorage(loadMore);
-
-      if (mediaState.value != MediaState.failed) {
-        medias.addAll(fetchedMedias);
-        configureAllMediasPaginationParams(fetchedMedias.length);
-        setState(() {});
-      }
+      int fetchedMediasLength = 0;
+      do {
+        List<MediaModel> fetchedMedias = await fetchMediasFromStorage(loadMore);
+        fetchedMediasLength += fetchedMedias.length;
+        if (mediaState.value != MediaState.failed) {
+          configureAllMediasPaginationParams(fetchedMedias.length);
+          medias.addAll(fetchedMedias);
+        }
+      } while (fetchedMediasLength < 20 && mediaState.value == MediaState.success);
+      setState(() {});
     } else {
-      if (mediaState.value == MediaState.empty) return;
-
       List<MediaModel> fetchedMedias = await fetchMediasFromStorage(loadMore);
 
       if (mediaState.value != MediaState.failed) {
@@ -308,9 +309,11 @@ class _MediaPickerBottomSheetState extends State<MediaPickerBottomSheet> {
       } else {
         mediaState.value = MediaState.loading;
       }
-      List<AssetEntity> entities = await paths[
-              currentAssetIndex > 0 ? currentAssetIndex - 1 : currentAssetIndex]
+      List<AssetEntity> entities = await paths[currentPathIndex]
           .getAssetListPaged(size: pageSize, page: assetPageIndex);
+      print("==================== Fetching =====================");
+      print(paths[currentPathIndex].name);
+      print(entities.length);
       mediaState.value = MediaState.success;
       return entities.map((entity) => MediaModel(assetEntity: entity)).toList();
     } catch (e) {
@@ -322,9 +325,9 @@ class _MediaPickerBottomSheetState extends State<MediaPickerBottomSheet> {
   void configureAllMediasPaginationParams(int mediasLength) {
     if (mediaState.value == MediaState.success) {
       if (mediasLength < pageSize) {
-        currentAssetIndex++;
+        currentPathIndex++;
         assetPageIndex = 0;
-        if (currentAssetIndex >= paths.length) {
+        if (currentPathIndex >= paths.length) {
           mediaState.value = MediaState.empty;
         }
       } else {
