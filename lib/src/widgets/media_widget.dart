@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_media_picker/src/models/media_model.dart';
 
@@ -59,8 +61,8 @@ class MediaWidget extends StatelessWidget {
           builder: (context, mediaState, child) {
             switch (mediaState) {
               case MediaState.success:
-                return Image.memory(
-                  media.image!,
+                return Image.file(
+                  File(media.path!),
                   fit: mediaFit ?? BoxFit.cover,
                 );
               default:
