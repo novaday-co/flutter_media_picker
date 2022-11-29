@@ -34,6 +34,7 @@ class MediaPickerBottomSheet extends StatefulWidget {
 
   final Color? mediaBackgroundColor;
 
+
   final Color? mediaSkeletonBaseColor;
 
   final Color? mediaSkeletonShimmerColor;
@@ -115,62 +116,68 @@ class _MediaPickerBottomSheetState extends State<MediaPickerBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8),
-      child: Column(
-        key: modalKey,
-        children: [
-          ModalHeader(
-            paths: paths.map((e) => e.name).toList(),
-            selectedDropDownItemIndex: selectedPathIndex,
-            onChangePath: _onChangeAssetPath,
-            crossFadeState: _crossFadeState,
-            onOpenGallery: _onOpenGallery,
-            headersIconsBorderColor: widget.headersIconsBorderColor,
-            headersIconsColor: widget.headersIconsColor,
-            dropDownButtonBackgroundColor: widget.backgroundColor,
-            dropDownItemsTextStyle: widget.dropDownItemsTextStyle,
-            dropDownButtonTextStyle: widget.dropDownButtonTextStyle,
-            dropDownBackgroundColor: widget.dropDownBackgroundColor,
-            dropDownSelectedItemBackgroundColor:
-                widget.dropDownSelectedItemBackgroundColor,
-          ),
-          Expanded(
-            child: NotificationListener(
-              onNotification: scrollListener,
-              child: ValueListenableBuilder<MediaState>(
-                valueListenable: mediaState,
-                builder: (context, state, child) {
-                  switch (state) {
-                    case MediaState.loading:
-                      return const GridViewSkeletonLoading();
-                    default:
-                      return MediasGridView(
-                        cameraController: cameraController,
-                        medias: medias,
-                        onSelectMedia: _onSelectMedia,
-                        onOpenCamera: _onOpenCamera,
-                        scrollController: widget.scrollController,
-                        loadingWidget: widget.mediaLoadingWidget,
-                        mediaBackgroundColor: widget.mediaBackgroundColor,
-                        mediaBorder: widget.mediaBorder,
-                        mediaFit: widget.mediaFit,
-                        mediaSkeletonBaseColor: widget.mediaSkeletonBaseColor,
-                        mediaSkeletonShimmerColor:
-                            widget.mediaSkeletonShimmerColor,
-                        boxShape: widget.mediaBoxShape,
-                        borderRadius: widget.mediaBorderRadius,
-                        boxShadow: widget.mediaBoxShadow,
-                        mediaHorizontalSpacing: widget.mediaHorizontalSpacing,
-                        mediaVerticalSpacing: widget.mediaVerticalSpacing,
-                        mediaWidgetWidth: widget.mediaWidgetWidth,
-                      );
-                  }
-                },
+    return Container(
+      color: widget.backgroundColor ?? Colors.white,
+      margin: EdgeInsets.only(top: AppBar().preferredSize.height),
+      child: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8),
+          child: Column(
+            key: modalKey,
+            children: [
+              ModalHeader(
+                paths: paths.map((e) => e.name).toList(),
+                selectedDropDownItemIndex: selectedPathIndex,
+                onChangePath: _onChangeAssetPath,
+                crossFadeState: _crossFadeState,
+                onOpenGallery: _onOpenGallery,
+                headersIconsBorderColor: widget.headersIconsBorderColor,
+                headersIconsColor: widget.headersIconsColor,
+                dropDownButtonBackgroundColor: widget.backgroundColor,
+                dropDownItemsTextStyle: widget.dropDownItemsTextStyle,
+                dropDownButtonTextStyle: widget.dropDownButtonTextStyle,
+                dropDownBackgroundColor: widget.dropDownBackgroundColor,
+                dropDownSelectedItemBackgroundColor:
+                    widget.dropDownSelectedItemBackgroundColor,
               ),
-            ),
-          )
-        ],
+              Expanded(
+                child: NotificationListener(
+                  onNotification: scrollListener,
+                  child: ValueListenableBuilder<MediaState>(
+                    valueListenable: mediaState,
+                    builder: (context, state, child) {
+                      switch (state) {
+                        case MediaState.loading:
+                          return const GridViewSkeletonLoading();
+                        default:
+                          return MediasGridView(
+                            cameraController: cameraController,
+                            medias: medias,
+                            onSelectMedia: _onSelectMedia,
+                            onOpenCamera: _onOpenCamera,
+                            scrollController: widget.scrollController,
+                            loadingWidget: widget.mediaLoadingWidget,
+                            mediaBackgroundColor: widget.mediaBackgroundColor,
+                            mediaBorder: widget.mediaBorder,
+                            mediaFit: widget.mediaFit,
+                            mediaSkeletonBaseColor: widget.mediaSkeletonBaseColor,
+                            mediaSkeletonShimmerColor:
+                                widget.mediaSkeletonShimmerColor,
+                            boxShape: widget.mediaBoxShape,
+                            borderRadius: widget.mediaBorderRadius,
+                            boxShadow: widget.mediaBoxShadow,
+                            mediaHorizontalSpacing: widget.mediaHorizontalSpacing,
+                            mediaVerticalSpacing: widget.mediaVerticalSpacing,
+                            mediaWidgetWidth: widget.mediaWidgetWidth,
+                          );
+                      }
+                    },
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
       ),
     );
   }
