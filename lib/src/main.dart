@@ -28,6 +28,7 @@ class MediaPicker {
         final TextStyle? dropDownItemsTextStyle,
         final Widget? mediaLoadingWidget,
         final MediaCropper? mediaCropper,
+        final bool? safeArea,
       }) async {
     final PermissionState ps = await PhotoManager.requestPermissionExtend(
         requestOption: const PermissionRequestOption(
@@ -39,7 +40,7 @@ class MediaPicker {
         initHeight: 0.45,
         maxHeight: 1,
         useRootNavigator: true,
-        isSafeArea: true,
+        isSafeArea: safeArea ?? false,
         bottomSheetColor: backgroundColor ?? Colors.white,
         builder: (context, scrollController, offset) => MediaPickerBottomSheet(
           scrollController: scrollController,
