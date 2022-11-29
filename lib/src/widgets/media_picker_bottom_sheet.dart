@@ -316,9 +316,6 @@ class _MediaPickerBottomSheetState extends State<MediaPickerBottomSheet> {
       }
       List<AssetEntity> entities = await paths[currentPathIndex]
           .getAssetListPaged(size: pageSize, page: assetPageIndex);
-      print("==================== Fetching =====================");
-      print(paths[currentPathIndex].name);
-      print(entities.length);
       mediaState.value = MediaState.success;
       return entities.map((entity) => MediaModel(assetEntity: entity)).toList();
     } catch (e) {
