@@ -41,7 +41,7 @@ class MediaPicker {
         maxHeight: 1,
         useRootNavigator: true,
         isSafeArea: safeArea ?? false,
-        bottomSheetColor: backgroundColor ?? Colors.transparent,
+        bottomSheetColor: Colors.transparent,
         builder: (context, scrollController, offset) => MediaPickerBottomSheet(
           scrollController: scrollController,
           mediaCropper: mediaCropper,
