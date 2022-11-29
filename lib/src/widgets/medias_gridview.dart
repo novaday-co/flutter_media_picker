@@ -4,7 +4,6 @@ import 'package:flutter_media_picker/src/models/media_model.dart';
 import 'package:flutter_media_picker/src/widgets/camera_widget.dart';
 import 'package:flutter_media_picker/src/widgets/media_widget.dart';
 
-
 class MediasGridView extends StatelessWidget {
   final CameraController? cameraController;
   final List<MediaModel> medias;
@@ -68,21 +67,18 @@ class MediasGridView extends StatelessWidget {
       controller: scrollController,
       shrinkWrap: true,
       itemBuilder: (context, index) {
-        if (index == 0) {
-          if (cameraController != null) {
-            return Hero(
-              tag: "cameraHero",
-              child: GestureDetector(
-                onTap: onOpenCamera,
-                child: CameraWidget(cameraController: cameraController!),
-              ),
-            );
-          }
-          return const SizedBox();
+        if (index == 0 && cameraController != null) {
+          return Hero(
+            tag: "cameraHero",
+            child: GestureDetector(
+              onTap: onOpenCamera,
+              child: CameraWidget(cameraController: cameraController!),
+            ),
+          );
         }
         return MediaWidget(
-          onSelect: () => onSelectMedia(index),
-          media: medias[index - 1],
+          onSelect: () => onSelectMedia(index - _cameraIndexDifference),
+          media: medias[index - _cameraIndexDifference],
           borderRadius: BorderRadius.circular(10),
           boxShape: BoxShape.rectangle,
           mediaSkeletonShimmerColor: mediaSkeletonShimmerColor,
@@ -94,7 +90,14 @@ class MediasGridView extends StatelessWidget {
           boxShadow: boxShadow,
         );
       },
-      itemCount: medias.length + 1,
+      itemCount: medias.length + _cameraIndexDifference,
     );
+  }
+
+  int get _cameraIndexDifference{
+    if(cameraController != null){
+      return 1;
+    }
+    return 0;
   }
 }

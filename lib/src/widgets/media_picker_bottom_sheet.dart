@@ -106,6 +106,7 @@ class _MediaPickerBottomSheetState extends State<MediaPickerBottomSheet> {
     initialCamera();
     super.initState();
   }
+
   @override
   void dispose() {
     super.dispose();
@@ -241,10 +242,11 @@ class _MediaPickerBottomSheetState extends State<MediaPickerBottomSheet> {
       context,
       MaterialPageRoute(
         builder: (context) => EditImagePage(
-            title: "",
-            mediaCropper: widget.mediaCropper,
-            imageQualityPercentage: widget.imageQualityPercentage,
-            imagePath: medias[index - 1].path!),
+          title: "",
+          mediaCropper: widget.mediaCropper,
+          imageQualityPercentage: widget.imageQualityPercentage,
+          imagePath: medias[index].path!,
+        ),
       ),
     );
   }
@@ -291,7 +293,8 @@ class _MediaPickerBottomSheetState extends State<MediaPickerBottomSheet> {
           configureAllMediasPaginationParams(fetchedMedias.length);
           medias.addAll(fetchedMedias);
         }
-      } while (fetchedMediasLength < 20 && mediaState.value == MediaState.success);
+      } while (
+          fetchedMediasLength < 20 && mediaState.value == MediaState.success);
       setState(() {});
     } else {
       List<MediaModel> fetchedMedias = await fetchMediasFromStorage(loadMore);
