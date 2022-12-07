@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_media_picker/src/models/cropper_model.dart';
 import 'package:flutter_media_picker/src/models/media_model.dart';
 import 'package:flutter_media_picker/src/models/modal_header_model.dart';
-import 'package:flutter_media_picker/src/utils/screen_size.dart';
-import 'package:flutter_media_picker/src/widgets/camera_page.dart';
-import 'package:flutter_media_picker/src/widgets/edit_image_page.dart';
+import 'package:flutter_media_picker/src/utils/context_extension.dart';
+import 'package:flutter_media_picker/src/widgets/media_picker_bottom_sheet/widget_bottom_sheet_header.dart';
+import 'package:flutter_media_picker/src/widgets/page_camera.dart';
+import 'package:flutter_media_picker/src/widgets/page_cropper.dart';
 import 'package:flutter_media_picker/src/widgets/gridview_skeleton_loading.dart';
-import 'package:flutter_media_picker/src/widgets/medias_gridview.dart';
-import 'package:flutter_media_picker/src/widgets/modal_header.dart';
+import 'package:flutter_media_picker/src/widgets/widget_medias_gridview.dart';
 import 'package:gallery_saver/gallery_saver.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:photo_manager/photo_manager.dart';
@@ -154,7 +154,7 @@ class _MediaPickerBottomSheetState extends State<MediaPickerBottomSheet> {
   CrossFadeState get _crossFadeState {
     if (modalKey.currentContext != null) {
       final obj = modalKey.currentContext?.findRenderObject() as RenderBox;
-      if (obj.size.height >= context.getScreenSize().height * 0.85) {
+      if (obj.size.height >= context.getScreenSize.height * 0.85) {
         return CrossFadeState.showSecond;
       }
       return CrossFadeState.showFirst;
@@ -169,7 +169,7 @@ class _MediaPickerBottomSheetState extends State<MediaPickerBottomSheet> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => EditImagePage(
+            builder: (context) => CropperPage(
               title: "",
               isFromCamera: false,
               imageQualityPercentage: widget.imageQualityPercentage,
@@ -194,7 +194,7 @@ class _MediaPickerBottomSheetState extends State<MediaPickerBottomSheet> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => EditImagePage(
+                    builder: (context) => CropperPage(
                       title: "",
                       isFromCamera: true,
                       imageQualityPercentage: widget.imageQualityPercentage,
@@ -217,7 +217,7 @@ class _MediaPickerBottomSheetState extends State<MediaPickerBottomSheet> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => EditImagePage(
+        builder: (context) => CropperPage(
           title: "",
           mediaCropper: widget.mediaCropper,
           imageQualityPercentage: widget.imageQualityPercentage,
