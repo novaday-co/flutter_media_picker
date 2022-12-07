@@ -1,10 +1,12 @@
 import 'package:bottom_sheet/bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_media_picker/src/models/cropper_model.dart';
+import 'package:flutter_media_picker/src/models/modal_header_model.dart';
 import 'package:flutter_media_picker/src/widgets/media_picker_bottom_sheet.dart';
 import 'package:photo_manager/photo_manager.dart';
 
 class MediaPicker {
+
   static Future<String?> showMediaPickerModal(
       BuildContext context, {
         final Color? backgroundColor,
@@ -20,13 +22,8 @@ class MediaPicker {
         final Color? mediaBackgroundColor,
         final Color? mediaSkeletonBaseColor,
         final Color? mediaSkeletonShimmerColor,
-        final Color? dropDownSelectedItemBackgroundColor,
-        final Color? dropDownBackgroundColor,
-        final Color? headersIconsColor,
-        final Color? headersIconsBorderColor,
-        final TextStyle? dropDownButtonTextStyle,
-        final TextStyle? dropDownItemsTextStyle,
         final Widget? mediaLoadingWidget,
+        final HeaderWidget? headerWidget,
         final MediaCropper? mediaCropper,
         final bool? safeArea,
       }) async {
@@ -47,8 +44,6 @@ class MediaPicker {
           mediaCropper: mediaCropper,
           backgroundColor: backgroundColor,
           mediaWidgetWidth: mediaWidgetWidth,
-          headersIconsColor: headersIconsColor,
-          headersIconsBorderColor: headersIconsBorderColor,
           mediaVerticalSpacing: mediaVerticalSpacing,
           mediaHorizontalSpacing: mediaHorizontalSpacing,
           mediaSkeletonShimmerColor: mediaSkeletonShimmerColor,
@@ -61,11 +56,7 @@ class MediaPicker {
           mediaBoxShadow: mediaBoxShadow,
           mediaBoxShape: mediaBoxShape,
           mediaLoadingWidget: mediaLoadingWidget,
-          dropDownSelectedItemBackgroundColor:
-          dropDownSelectedItemBackgroundColor,
-          dropDownBackgroundColor: dropDownBackgroundColor,
-          dropDownButtonTextStyle: dropDownButtonTextStyle,
-          dropDownItemsTextStyle: dropDownItemsTextStyle,
+          headerWidget: headerWidget,
         ),
       );
     } else {}

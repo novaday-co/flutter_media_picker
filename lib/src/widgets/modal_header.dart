@@ -1,26 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_media_picker/src/models/modal_header_model.dart';
 import 'package:flutter_media_picker/src/widgets/medias_path_drop_down.dart';
 
 class ModalHeader extends StatelessWidget {
   final List<String> paths;
+
   final Function(int) onChangePath;
+
   final VoidCallback onOpenGallery;
+
   final CrossFadeState crossFadeState;
+
   final int selectedDropDownItemIndex;
 
-  final TextStyle? dropDownButtonTextStyle;
-
-  final TextStyle? dropDownItemsTextStyle;
-
-  final Color? dropDownSelectedItemBackgroundColor;
-
-  final Color? dropDownBackgroundColor;
-
-  final Color? dropDownButtonBackgroundColor;
-
-  final Color? headersIconsBorderColor;
-
-  final Color? headersIconsColor;
+  final HeaderWidget? headerWidget;
 
   const ModalHeader({
     Key? key,
@@ -29,17 +22,16 @@ class ModalHeader extends StatelessWidget {
     required this.selectedDropDownItemIndex,
     required this.onOpenGallery,
     required this.crossFadeState,
-    this.dropDownButtonTextStyle,
-    this.dropDownItemsTextStyle,
-    this.dropDownSelectedItemBackgroundColor,
-    this.dropDownBackgroundColor,
-    this.dropDownButtonBackgroundColor,
-    this.headersIconsBorderColor,
-    this.headersIconsColor,
+    this.headerWidget,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+
+    if(headerWidget?.headerBuilder != null){
+      return headerWidget!.headerBuilder!.call(paths,onChangePath);
+    }
+
     return AnimatedCrossFade(
       firstChild: SizedBox(
         height: 50,
@@ -67,14 +59,14 @@ class ModalHeader extends StatelessWidget {
                   width: 40,
                   decoration: BoxDecoration(
                     border: Border.all(
-                      color: headersIconsBorderColor ?? Colors.grey,
+                      color: headerWidget?.iconsBorderColor ?? Colors.grey,
                     ),
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child:  Center(
+                  child: Center(
                     child: Icon(
                       Icons.arrow_back_ios,
-                      color: headersIconsColor ?? Colors.grey,
+                      color: headerWidget?.iconsColor ?? Colors.grey,
                       size: 12,
                     ),
                   ),
@@ -83,20 +75,19 @@ class ModalHeader extends StatelessWidget {
               Expanded(
                 child: MediaPickerDropDown(
                   items: [
-                    "all media",
                     ...paths.map((e) => e).toList(),
                   ],
                   onChanged: (index) {
                     if (index != null) onChangePath.call(index);
                   },
-                  dropDownButtonBackgroundColor: dropDownButtonBackgroundColor,
+                  dropDownButtonBackgroundColor: headerWidget?.dropDownButtonBackgroundColor,
                   selectedItemBackgroundColor:
-                  dropDownSelectedItemBackgroundColor,
+                  headerWidget?.dropDownSelectedItemBackgroundColor,
                   selectedItemIndex: selectedDropDownItemIndex,
                   hintText: "choose media",
-                  dropDownItemsBackgroundColor: dropDownBackgroundColor,
-                  dropDownButtonTextStyle: dropDownButtonTextStyle,
-                  dropDownItemsTextStyle: dropDownItemsTextStyle,
+                  dropDownItemsBackgroundColor: headerWidget?.dropDownBackgroundColor,
+                  dropDownButtonTextStyle: headerWidget?.dropDownButtonTextStyle,
+                  dropDownItemsTextStyle: headerWidget?.dropDownItemsTextStyle,
                 ),
               ),
               PopupMenuButton(
@@ -105,7 +96,7 @@ class ModalHeader extends StatelessWidget {
                     value: 0,
                     child: Text(
                       'open gallery',
-                      style: dropDownItemsTextStyle ??
+                      style: headerWidget?.dropDownItemsTextStyle ??
                           const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w500,
@@ -114,10 +105,9 @@ class ModalHeader extends StatelessWidget {
                   ),
                 ],
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15)
-                ),
-                offset: const Offset(0,40),
-                color: dropDownBackgroundColor,
+                    borderRadius: BorderRadius.circular(15)),
+                offset: const Offset(0, 40),
+                color: headerWidget?.dropDownBackgroundColor,
                 onSelected: (index) {
                   onOpenGallery.call();
                 },
@@ -126,14 +116,14 @@ class ModalHeader extends StatelessWidget {
                   width: 40,
                   decoration: BoxDecoration(
                     border: Border.all(
-                      color: headersIconsBorderColor ?? Colors.grey,
+                      color: headerWidget?.iconsBorderColor ?? Colors.grey,
                     ),
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child:  Center(
+                  child: Center(
                     child: Icon(
                       Icons.more_vert_sharp,
-                      color: headersIconsColor ?? Colors.grey,
+                      color: headerWidget?.iconsColor ?? Colors.grey,
                       size: 18,
                     ),
                   ),

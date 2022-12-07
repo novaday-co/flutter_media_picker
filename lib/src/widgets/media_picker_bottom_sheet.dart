@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_media_picker/src/models/cropper_model.dart';
 import 'package:flutter_media_picker/src/models/media_model.dart';
+import 'package:flutter_media_picker/src/models/modal_header_model.dart';
 import 'package:flutter_media_picker/src/utils/screen_size.dart';
 import 'package:flutter_media_picker/src/widgets/camera_page.dart';
 import 'package:flutter_media_picker/src/widgets/edit_image_page.dart';
@@ -34,28 +35,17 @@ class MediaPickerBottomSheet extends StatefulWidget {
 
   final Color? mediaBackgroundColor;
 
+  final HeaderWidget? headerWidget;
 
   final Color? mediaSkeletonBaseColor;
+
+  final Color? backgroundColor;
 
   final Color? mediaSkeletonShimmerColor;
 
   final Widget? mediaLoadingWidget;
 
   final MediaCropper? mediaCropper;
-
-  final TextStyle? dropDownButtonTextStyle;
-
-  final TextStyle? dropDownItemsTextStyle;
-
-  final Color? dropDownSelectedItemBackgroundColor;
-
-  final Color? dropDownBackgroundColor;
-
-  final Color? backgroundColor;
-
-  final Color? headersIconsBorderColor;
-
-  final Color? headersIconsColor;
 
   final int? imageQualityPercentage;
 
@@ -70,19 +60,14 @@ class MediaPickerBottomSheet extends StatefulWidget {
     this.mediaBoxShadow,
     this.mediaFit,
     this.mediaBorder,
-    this.backgroundColor,
     this.mediaBackgroundColor,
     this.mediaSkeletonBaseColor,
     this.mediaSkeletonShimmerColor,
-    this.headersIconsBorderColor,
-    this.headersIconsColor,
     this.mediaLoadingWidget,
-    this.dropDownButtonTextStyle,
-    this.dropDownItemsTextStyle,
-    this.dropDownSelectedItemBackgroundColor,
-    this.dropDownBackgroundColor,
     this.imageQualityPercentage,
     this.mediaCropper,
+    this.backgroundColor,
+    this.headerWidget,
   }) : super(key: key);
 
   @override
@@ -126,19 +111,15 @@ class _MediaPickerBottomSheetState extends State<MediaPickerBottomSheet> {
             key: modalKey,
             children: [
               ModalHeader(
-                paths: paths.map((e) => e.name).toList(),
+                paths: [
+                  "all media",
+                  ...paths.map((e) => e.name).toList(),
+                ],
                 selectedDropDownItemIndex: selectedPathIndex,
                 onChangePath: _onChangeAssetPath,
                 crossFadeState: _crossFadeState,
                 onOpenGallery: _onOpenGallery,
-                headersIconsBorderColor: widget.headersIconsBorderColor,
-                headersIconsColor: widget.headersIconsColor,
-                dropDownButtonBackgroundColor: widget.backgroundColor,
-                dropDownItemsTextStyle: widget.dropDownItemsTextStyle,
-                dropDownButtonTextStyle: widget.dropDownButtonTextStyle,
-                dropDownBackgroundColor: widget.dropDownBackgroundColor,
-                dropDownSelectedItemBackgroundColor:
-                    widget.dropDownSelectedItemBackgroundColor,
+                headerWidget: widget.headerWidget,
               ),
               Expanded(
                 child: NotificationListener(
@@ -160,13 +141,15 @@ class _MediaPickerBottomSheetState extends State<MediaPickerBottomSheet> {
                             mediaBackgroundColor: widget.mediaBackgroundColor,
                             mediaBorder: widget.mediaBorder,
                             mediaFit: widget.mediaFit,
-                            mediaSkeletonBaseColor: widget.mediaSkeletonBaseColor,
+                            mediaSkeletonBaseColor:
+                                widget.mediaSkeletonBaseColor,
                             mediaSkeletonShimmerColor:
                                 widget.mediaSkeletonShimmerColor,
                             boxShape: widget.mediaBoxShape,
                             borderRadius: widget.mediaBorderRadius,
                             boxShadow: widget.mediaBoxShadow,
-                            mediaHorizontalSpacing: widget.mediaHorizontalSpacing,
+                            mediaHorizontalSpacing:
+                                widget.mediaHorizontalSpacing,
                             mediaVerticalSpacing: widget.mediaVerticalSpacing,
                             mediaWidgetWidth: widget.mediaWidgetWidth,
                           );
