@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_media_picker/src/utils/context_extension.dart';
-import 'package:flutter_media_picker/src/widgets/widget_widget.dart';
+import 'package:flutter_media_picker/src/widgets/widget_skeleton.dart';
 
 class GridViewSkeletonLoading extends StatelessWidget {
   const GridViewSkeletonLoading({Key? key}) : super(key: key);
