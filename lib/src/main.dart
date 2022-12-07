@@ -46,8 +46,6 @@ class MediaPicker {
           mediaWidgetWidth: mediaWidgetWidth,
           mediaVerticalSpacing: mediaVerticalSpacing,
           mediaHorizontalSpacing: mediaHorizontalSpacing,
-          mediaSkeletonShimmerColor: mediaSkeletonShimmerColor,
-          mediaSkeletonBaseColor: mediaSkeletonBaseColor,
           mediaFit: mediaFit,
           mediaBorder: mediaBorder,
           imageQualityPercentage: imageQualityPercentage,
@@ -55,7 +53,6 @@ class MediaPicker {
           mediaBorderRadius: mediaBorderRadius,
           mediaBoxShadow: mediaBoxShadow,
           mediaBoxShape: mediaBoxShape,
-          mediaLoadingWidget: mediaLoadingWidget,
           headerWidget: headerWidget,
         ),
       );
