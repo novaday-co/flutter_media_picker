@@ -37,13 +37,7 @@ class MediaPickerBottomSheet extends StatefulWidget {
 
   final HeaderWidget? headerWidget;
 
-  final Color? mediaSkeletonBaseColor;
-
   final Color? backgroundColor;
-
-  final Color? mediaSkeletonShimmerColor;
-
-  final Widget? mediaLoadingWidget;
 
   final MediaCropper? mediaCropper;
 
@@ -61,9 +55,6 @@ class MediaPickerBottomSheet extends StatefulWidget {
     this.mediaFit,
     this.mediaBorder,
     this.mediaBackgroundColor,
-    this.mediaSkeletonBaseColor,
-    this.mediaSkeletonShimmerColor,
-    this.mediaLoadingWidget,
     this.imageQualityPercentage,
     this.mediaCropper,
     this.backgroundColor,
@@ -137,14 +128,9 @@ class _MediaPickerBottomSheetState extends State<MediaPickerBottomSheet> {
                             onSelectMedia: _onSelectMedia,
                             onOpenCamera: _onOpenCamera,
                             scrollController: widget.scrollController,
-                            loadingWidget: widget.mediaLoadingWidget,
                             mediaBackgroundColor: widget.mediaBackgroundColor,
                             mediaBorder: widget.mediaBorder,
                             mediaFit: widget.mediaFit,
-                            mediaSkeletonBaseColor:
-                                widget.mediaSkeletonBaseColor,
-                            mediaSkeletonShimmerColor:
-                                widget.mediaSkeletonShimmerColor,
                             boxShape: widget.mediaBoxShape,
                             borderRadius: widget.mediaBorderRadius,
                             boxShadow: widget.mediaBoxShadow,
@@ -333,7 +319,7 @@ class _MediaPickerBottomSheetState extends State<MediaPickerBottomSheet> {
 
   bool scrollListener(Object notification) {
     if (notification is ScrollNotification) {
-      if (widget.scrollController.position.maxScrollExtent ==
+      if (widget.scrollController.position.maxScrollExtent - 200 <=
               widget.scrollController.offset &&
           mediaState.value != MediaState.loadMore) {
         fetchAssetsMedias(loadMore: true);
