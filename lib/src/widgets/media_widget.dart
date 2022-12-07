@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_media_picker/src/models/media_model.dart';
+import 'package:photo_manager/photo_manager.dart';
 
 class MediaWidget extends StatelessWidget {
   /// Required params which will be handled in package
@@ -25,7 +26,6 @@ class MediaWidget extends StatelessWidget {
 
   final Color? mediaSkeletonShimmerColor;
 
-  final Widget? loadingWidget;
 
   const MediaWidget({
     Key? key,
@@ -39,7 +39,6 @@ class MediaWidget extends StatelessWidget {
     this.mediaBackgroundColor,
     this.mediaSkeletonBaseColor,
     this.mediaSkeletonShimmerColor,
-    this.loadingWidget,
   })  : assert(borderRadius != null && boxShape != BoxShape.circle),
         super(key: key);
 
@@ -61,12 +60,15 @@ class MediaWidget extends StatelessWidget {
           builder: (context, mediaState, child) {
             switch (mediaState) {
               case MediaState.success:
-                return Image.file(
-                  File(media.path!),
-                  fit: mediaFit ?? BoxFit.cover,
+                return AssetEntityImage(
+                  media.assetEntity!,
+                  isOriginal: false,
+                  fit: BoxFit.cover,
+                  thumbnailSize: const ThumbnailSize.square(200),
+                  thumbnailFormat: ThumbnailFormat.jpeg,
                 );
               default:
-                return loadingWidget ?? const SizedBox();
+                return const SizedBox();
             }
           },
         ),
