@@ -27,12 +27,6 @@ class MediasGridView extends StatelessWidget {
 
   final Color? mediaBackgroundColor;
 
-  final Color? mediaSkeletonBaseColor;
-
-  final Color? mediaSkeletonShimmerColor;
-
-  final Widget? loadingWidget;
-
   const MediasGridView({
     Key? key,
     required this.cameraController,
@@ -49,9 +43,6 @@ class MediasGridView extends StatelessWidget {
     this.mediaFit,
     this.mediaBorder,
     this.mediaBackgroundColor,
-    this.mediaSkeletonBaseColor,
-    this.mediaSkeletonShimmerColor,
-    this.loadingWidget,
   }) : super(key: key);
 
   @override
@@ -81,12 +72,9 @@ class MediasGridView extends StatelessWidget {
           media: medias[index - _cameraIndexDifference],
           borderRadius: BorderRadius.circular(10),
           boxShape: BoxShape.rectangle,
-          mediaSkeletonShimmerColor: mediaSkeletonShimmerColor,
-          mediaSkeletonBaseColor: mediaSkeletonBaseColor,
           mediaFit: mediaFit,
           mediaBorder: mediaBorder,
           mediaBackgroundColor: mediaBackgroundColor,
-          loadingWidget: loadingWidget,
           boxShadow: boxShadow,
         );
       },
