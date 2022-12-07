@@ -1,8 +1,8 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_media_picker/src/models/media_model.dart';
-import 'package:flutter_media_picker/src/widgets/camera_widget.dart';
-import 'package:flutter_media_picker/src/widgets/media_widget.dart';
+import 'package:flutter_media_picker/src/widgets/widget_camera.dart';
+import 'package:flutter_media_picker/src/widgets/widget_media.dart';
 
 class MediasGridView extends StatelessWidget {
   final CameraController? cameraController;

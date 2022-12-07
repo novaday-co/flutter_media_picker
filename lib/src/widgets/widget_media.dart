@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_media_picker/src/models/media_model.dart';
 import 'package:photo_manager/photo_manager.dart';
@@ -7,6 +5,7 @@ import 'package:photo_manager/photo_manager.dart';
 class MediaWidget extends StatelessWidget {
   /// Required params which will be handled in package
   final MediaModel media;
+
   final Function() onSelect;
 
   /// Ui customization props
@@ -25,7 +24,6 @@ class MediaWidget extends StatelessWidget {
   final Color? mediaSkeletonBaseColor;
 
   final Color? mediaSkeletonShimmerColor;
-
 
   const MediaWidget({
     Key? key,
