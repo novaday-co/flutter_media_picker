@@ -5,7 +5,7 @@ import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:flutter_media_picker/src/models/cropper_model.dart';
 import 'package:image_cropper/image_cropper.dart';
 
-class EditImagePage extends StatefulWidget {
+class CropperPage extends StatefulWidget {
   final String title;
   final String imagePath;
   final bool isFromCamera;
@@ -13,7 +13,7 @@ class EditImagePage extends StatefulWidget {
 
   final MediaCropper? mediaCropper;
 
-  const EditImagePage({
+  const CropperPage({
     Key? key,
     required this.title,
     required this.imagePath,
@@ -23,10 +23,10 @@ class EditImagePage extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  EditImagePageState createState() => EditImagePageState();
+  CropperPageState createState() => CropperPageState();
 }
 
-class EditImagePageState extends State<EditImagePage> {
+class CropperPageState extends State<CropperPage> {
   @override
   void initState() {
     super.initState();
