@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_media_picker/src/models/modal_header_model.dart';
-import 'package:flutter_media_picker/src/widgets/medias_path_drop_down.dart';
+import 'package:flutter_media_picker/src/widgets/widget_medias_path_drop_down.dart';
 
 class ModalHeader extends StatelessWidget {
   final List<String> paths;
