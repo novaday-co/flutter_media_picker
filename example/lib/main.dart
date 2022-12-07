@@ -35,7 +35,7 @@ class _MyHomePageState extends State<MyHomePage> {
   String? selectedImagePath;
 
   void _showMediaPickerModal() async {
-    selectedImagePath = await MediaPicker.showMediaPickerModal(context);
+    selectedImagePath = await showMediaPickerBottomSheet(context);
     setState(() {});
   }
 
