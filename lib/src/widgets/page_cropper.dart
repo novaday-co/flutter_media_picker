@@ -8,7 +8,6 @@ import 'package:image_cropper/image_cropper.dart';
 class CropperPage extends StatefulWidget {
   final String title;
   final String imagePath;
-  final bool isFromCamera;
   final int? imageQualityPercentage;
 
   final MediaCropper? mediaCropper;
@@ -17,7 +16,6 @@ class CropperPage extends StatefulWidget {
     Key? key,
     required this.title,
     required this.imagePath,
-    this.isFromCamera = false,
     this.mediaCropper,
     this.imageQualityPercentage,
   }) : super(key: key);
@@ -111,19 +109,15 @@ class CropperPageState extends State<CropperPage> {
       ],
     ).then((croppedFile) {
       if (croppedFile != null) {
-        compressImage(croppedFile.path).then((compressedImagePath) {
-          final navigator = Navigator.of(context);
-          if (widget.isFromCamera) {
+        compressImage(croppedFile.path).then(
+          (compressedImagePath) {
+            final navigator = Navigator.of(context);
             navigator
               ..pop()
               ..pop()
               ..pop(compressedImagePath);
-          } else {
-            navigator
-              ..pop()
-              ..pop(compressedImagePath);
-          }
-        });
+          },
+        );
       } else {
         Navigator.pop(context);
       }
