@@ -326,7 +326,7 @@ class _MediaPickerBottomSheetState extends State<MediaPickerBottomSheet> {
 
   bool scrollListener(Object notification) {
     if (notification is ScrollNotification) {
-      if (widget.scrollController.position.maxScrollExtent - 200 <=
+      if (widget.scrollController.position.maxScrollExtent - 50 <=
               widget.scrollController.offset &&
           mediaState.value != MediaState.loadMore) {
         fetchAssetsMedias(loadMore: true);
