@@ -39,9 +39,13 @@ class MediaPickerDropDown extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text(
-                items[selectedItemIndex].toString(),
-                style: dropDownButtonTextStyle ?? const TextStyle(fontSize: 18),
+              Flexible(
+                child: Text(
+                  items[selectedItemIndex].toString(),
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                  style: dropDownButtonTextStyle ?? const TextStyle(fontSize: 18),
+                ),
               ),
               const SizedBox(
                 width: 8,
