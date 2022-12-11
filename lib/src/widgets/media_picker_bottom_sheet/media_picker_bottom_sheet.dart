@@ -5,16 +5,17 @@ import 'package:flutter_media_picker/src/models/cropper_model.dart';
 import 'package:flutter_media_picker/src/models/media_model.dart';
 import 'package:flutter_media_picker/src/models/modal_header_model.dart';
 import 'package:flutter_media_picker/src/utils/context_extension.dart';
+import 'package:flutter_media_picker/src/utils/helpers.dart';
 import 'package:flutter_media_picker/src/widgets/media_picker_bottom_sheet/widget_bottom_sheet_header.dart';
 import 'package:flutter_media_picker/src/widgets/page_camera.dart';
-import 'package:flutter_media_picker/src/widgets/page_cropper.dart';
 import 'package:flutter_media_picker/src/widgets/gridview_skeleton_loading.dart';
+import 'package:flutter_media_picker/src/widgets/page_image_preview.dart';
 import 'package:flutter_media_picker/src/widgets/widget_medias_gridview.dart';
-import 'package:gallery_saver/gallery_saver.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:photo_manager/photo_manager.dart';
 
 class MediaPickerBottomSheet extends StatefulWidget {
+
   final ScrollController scrollController;
 
   final double? mediaWidgetWidth;
@@ -41,7 +42,6 @@ class MediaPickerBottomSheet extends StatefulWidget {
 
   final MediaCropper? mediaCropper;
 
-  final int? imageQualityPercentage;
 
   const MediaPickerBottomSheet({
     Key? key,
@@ -55,7 +55,6 @@ class MediaPickerBottomSheet extends StatefulWidget {
     this.mediaFit,
     this.mediaBorder,
     this.mediaBackgroundColor,
-    this.imageQualityPercentage,
     this.mediaCropper,
     this.backgroundColor,
     this.headerWidget,
@@ -89,6 +88,7 @@ class _MediaPickerBottomSheetState extends State<MediaPickerBottomSheet> {
     super.dispose();
     cameraController?.dispose();
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -164,64 +164,62 @@ class _MediaPickerBottomSheetState extends State<MediaPickerBottomSheet> {
 
   void _onOpenGallery() async {
     final ImagePicker picker = ImagePicker();
-    picker.pickImage(source: ImageSource.gallery).then((image) {
-      if (image != null) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => CropperPage(
-              title: "",
-              isFromCamera: false,
-              imageQualityPercentage: widget.imageQualityPercentage,
-              mediaCropper: widget.mediaCropper,
-              imagePath: image.path,
+    picker.pickImage(source: ImageSource.gallery).then(
+      (image) {
+        if (image != null) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ImagePreviewPage(
+                imagePath: image.path,
+                title: "",
+                mediaCropper: widget.mediaCropper,
+              ),
             ),
-          ),
-        );
-      }
-    });
+          );
+        }
+      },
+    );
   }
 
   void _onOpenCamera() {
     Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => CameraPage(
-            cameraController: cameraController!,
-            onCapture: () {
-              cameraController?.takePicture().then((imageFile) {
-                _saveCameraImageInGallery(imageFile);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => CropperPage(
-                      title: "",
-                      isFromCamera: true,
-                      imageQualityPercentage: widget.imageQualityPercentage,
-                      mediaCropper: widget.mediaCropper,
-                      imagePath: imageFile.path,
-                    ),
-                  ),
-                );
-              });
-            },
-          ),
-        ));
-  }
-
-  void _saveCameraImageInGallery(XFile? image) async {
-    GallerySaver.saveImage(image!.path);
+      context,
+      MaterialPageRoute(
+        builder: (context) => CameraPage(
+          cameras: cameras,
+          cameraController: cameraController,
+          onNavigate: (imageFile) async {
+            saveImageInGallery(imageFile.path);
+            await Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ImagePreviewPage(
+                  imagePath: imageFile.path,
+                  title: "",
+                  navigateFromCamera: true,
+                  mediaCropper: widget.mediaCropper,
+                ),
+              ),
+            );
+          },
+        ),
+      ),
+    ).then((value) async {
+      cameraController = CameraController(cameras!.first, ResolutionPreset.max);
+      await cameraController!.initialize();
+      setState(() {});
+    });
   }
 
   void _onSelectMedia(int index) {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => CropperPage(
+        builder: (context) => ImagePreviewPage(
+          imagePath: medias[index].path!,
           title: "",
           mediaCropper: widget.mediaCropper,
-          imageQualityPercentage: widget.imageQualityPercentage,
-          imagePath: medias[index].path!,
         ),
       ),
     );
