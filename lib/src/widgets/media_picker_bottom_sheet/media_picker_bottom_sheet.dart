@@ -40,6 +40,10 @@ class MediaPickerBottomSheet extends StatefulWidget {
 
   final Color? backgroundColor;
 
+  final Color? mediaSkeletonBaseColor;
+
+  final Color? mediaSkeletonShimmerColor;
+
   final MediaCropper? mediaCropper;
 
 
@@ -58,6 +62,8 @@ class MediaPickerBottomSheet extends StatefulWidget {
     this.mediaCropper,
     this.backgroundColor,
     this.headerWidget,
+    this.mediaSkeletonBaseColor,
+    this.mediaSkeletonShimmerColor,
   }) : super(key: key);
 
   @override
@@ -120,7 +126,10 @@ class _MediaPickerBottomSheetState extends State<MediaPickerBottomSheet> {
                     builder: (context, state, child) {
                       switch (state) {
                         case MediaState.loading:
-                          return const GridViewSkeletonLoading();
+                          return  GridViewSkeletonLoading(
+                            skeletonBaseColor: widget.mediaSkeletonBaseColor,
+                            skeletonShimmerColor: widget.mediaSkeletonShimmerColor,
+                          );
                         default:
                           return MediasGridView(
                             cameraController: cameraController,

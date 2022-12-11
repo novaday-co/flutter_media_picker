@@ -3,7 +3,15 @@ import 'package:flutter_media_picker/src/utils/context_extension.dart';
 import 'package:flutter_media_picker/src/widgets/widget_skeleton.dart';
 
 class GridViewSkeletonLoading extends StatelessWidget {
-  const GridViewSkeletonLoading({Key? key}) : super(key: key);
+  final Color? skeletonBaseColor;
+
+  final Color? skeletonShimmerColor;
+
+  const GridViewSkeletonLoading({
+    Key? key,
+    this.skeletonShimmerColor,
+    this.skeletonBaseColor,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +27,8 @@ class GridViewSkeletonLoading extends StatelessWidget {
       itemBuilder: (context, index) => SkeletonWidget.rectangular(
         width: context.getScreenSize.width,
         height: context.getScreenSize.width,
+        shimmerColor: skeletonShimmerColor,
+        shimmerBaseColor: skeletonBaseColor,
       ),
       itemCount: 12,
     );

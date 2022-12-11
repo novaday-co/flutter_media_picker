@@ -16,6 +16,8 @@ Future<String?> showMediaPickerBottomSheet(
       final BoxFit? mediaFit,
       final Border? mediaBorder,
       final Color? mediaBackgroundColor,
+      final Color? mediaSkeletonShimmerColor,
+      final Color? mediaSkeletonBaseColor,
       final HeaderWidget? headerWidget,
       final MediaCropper? mediaCropper,
       final bool? safeArea,
@@ -46,6 +48,8 @@ Future<String?> showMediaPickerBottomSheet(
         mediaBoxShadow: mediaBoxShadow,
         mediaBoxShape: mediaBoxShape,
         headerWidget: headerWidget,
+        mediaSkeletonShimmerColor: mediaSkeletonShimmerColor,
+        mediaSkeletonBaseColor: mediaSkeletonBaseColor,
       ),
     );
   } else {}
