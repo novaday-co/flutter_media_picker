@@ -45,7 +45,6 @@ Future<String?> showMediaPickerBottomSheet(
         mediaHorizontalSpacing: mediaHorizontalSpacing,
         mediaFit: mediaFit,
         mediaBorder: mediaBorder,
-        imageQualityPercentage: imageQualityPercentage,
         mediaBackgroundColor: mediaBackgroundColor,
         mediaBorderRadius: mediaBorderRadius,
         mediaBoxShadow: mediaBoxShadow,
