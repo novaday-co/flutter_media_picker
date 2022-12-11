@@ -10,7 +10,6 @@ Future<String?> showMediaPickerBottomSheet(
       final double? mediaWidgetWidth,
       final double? mediaHorizontalSpacing,
       final double? mediaVerticalSpacing,
-      final int? imageQualityPercentage,
       final BorderRadius? mediaBorderRadius,
       final BoxShape? mediaBoxShape,
       final List<BoxShadow>? mediaBoxShadow,
