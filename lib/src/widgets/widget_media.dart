@@ -21,10 +21,6 @@ class MediaWidget extends StatelessWidget {
 
   final Color? mediaBackgroundColor;
 
-  final Color? mediaSkeletonBaseColor;
-
-  final Color? mediaSkeletonShimmerColor;
-
   const MediaWidget({
     Key? key,
     required this.onSelect,
@@ -35,8 +31,6 @@ class MediaWidget extends StatelessWidget {
     this.mediaFit,
     this.mediaBorder,
     this.mediaBackgroundColor,
-    this.mediaSkeletonBaseColor,
-    this.mediaSkeletonShimmerColor,
   })  : assert(borderRadius != null && boxShape != BoxShape.circle),
         super(key: key);
 
