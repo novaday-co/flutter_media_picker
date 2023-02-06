@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_media_picker/flutter_media_picker.dart';
 
@@ -36,6 +37,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _showMediaPickerModal() async {
     selectedImagePath = await showMediaPickerBottomSheet(context);
+    print(selectedImagePath);
     setState(() {});
   }
 
@@ -52,7 +54,7 @@ class _MyHomePageState extends State<MyHomePage> {
             if(selectedImagePath != null) SizedBox(
               height: 200,
               width: 200,
-              child: Image.file(File(selectedImagePath!),),
+              child: kIsWeb ? Image.network(selectedImagePath!):Image.file(File(selectedImagePath!),),
             ),
             TextButton(
               onPressed: _showMediaPickerModal,
