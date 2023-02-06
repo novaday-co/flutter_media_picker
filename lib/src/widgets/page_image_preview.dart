@@ -125,6 +125,7 @@ class _ImagePreviewPageState extends State<ImagePreviewPage> {
       if (widget.mediaCropper?.compressPicture ?? false) {
         pickedMedia.path = await compressImage(pickedMedia.path ?? "") ?? "";
       }
+      pickedMedia.bytes = await File(pickedMedia.path!).readAsBytes();
       if (widget.navigateFromCamera) {
         navigator.pop();
       }
