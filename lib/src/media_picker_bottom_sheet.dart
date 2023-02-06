@@ -2,6 +2,8 @@ import 'package:bottom_sheet/bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_media_picker/flutter_media_picker.dart';
 import 'package:flutter_media_picker/src/widgets/media_picker_bottom_sheet/media_picker_bottom_sheet.dart';
+import 'package:flutter_media_picker/src/widgets/page_image_preview.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:photo_manager/photo_manager.dart';
 
 Future<String?> showMediaPickerBottomSheet(
@@ -52,7 +54,25 @@ Future<String?> showMediaPickerBottomSheet(
         mediaSkeletonBaseColor: mediaSkeletonBaseColor,
       ),
     );
-  } else {}
+  } else {
+    final ImagePicker picker = ImagePicker();
+    picker.pickImage(source: ImageSource.gallery).then(
+          (image) {
+        if (image != null) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ImagePreviewPage(
+                imagePath: image.path,
+                title: "",
+                mediaCropper: mediaCropper,
+              ),
+            ),
+          );
+        }
+      },
+    );
+  }
 
   return null;
 }
