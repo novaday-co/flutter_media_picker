@@ -1,13 +1,16 @@
+import 'dart:io';
+
 import 'package:bottom_sheet/bottom_sheet.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_media_picker/flutter_media_picker.dart';
+import 'package:flutter_media_picker/src/models/picked_media.dart';
 import 'package:flutter_media_picker/src/widgets/media_picker_bottom_sheet/media_picker_bottom_sheet.dart';
 import 'package:flutter_media_picker/src/widgets/page_image_preview.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:photo_manager/photo_manager.dart';
 
-Future<String?> showMediaPickerBottomSheet(
+Future<PickedMedia?> showMediaPickerBottomSheet(
   BuildContext context, {
   final Color? backgroundColor,
   final double? mediaWidgetWidth,
@@ -60,14 +63,16 @@ Future<String?> showMediaPickerBottomSheet(
   } else {
     final ImagePicker picker = ImagePicker();
     return picker.pickImage(source: ImageSource.gallery).then(
-      (image) {
+      (image) async {
         if (image != null) {
+          final bytes = await image.readAsBytes();
           return Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => ImagePreviewPage(
                 imagePath: image.path,
                 title: "",
+                bytes: bytes,
                 navigateFromImagePicker: true,
                 mediaCropper: mediaCropper,
               ),

@@ -5,3 +5,4 @@ export 'src/media_picker_bottom_sheet.dart';
 
 export 'src/models/cropper_model.dart';
 export 'src/models/modal_header_model.dart';
+export 'src/models/picked_media.dart';
