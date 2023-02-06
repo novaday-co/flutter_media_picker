@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:flutter_media_picker/flutter_media_picker.dart';
@@ -34,6 +35,7 @@ class _ImagePreviewPageState extends State<ImagePreviewPage> {
   void initState() {
     super.initState();
     imagePath = widget.imagePath;
+    print(imagePath);
   }
 
   @override
@@ -42,15 +44,12 @@ class _ImagePreviewPageState extends State<ImagePreviewPage> {
       backgroundColor: Colors.black,
       body: Stack(
         children: [
-          PhotoView(
+          PhotoView.customChild(
             minScale: PhotoViewComputedScale.contained,
             maxScale: PhotoViewComputedScale.contained.multiplier,
-            imageProvider: FileImage(
-              File(
-                imagePath,
-              ),
-            ),
+            child: kIsWeb ? Image.network(imagePath):Image.file(File(imagePath)),
           ),
+
           Align(
             alignment: Alignment.topLeft,
             child: SafeArea(
@@ -164,8 +163,9 @@ class _ImagePreviewPageState extends State<ImagePreviewPage> {
           viewPort: const CroppieViewPort(
             width: 480,
             height: 480,
-            type: 'circle',
           ),
+          enableResize: true,
+          mouseWheelZoom: true,
           enableExif: true,
           enableZoom: true,
           showZoomer: true,
