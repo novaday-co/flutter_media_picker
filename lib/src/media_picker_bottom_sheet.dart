@@ -8,24 +8,24 @@ import 'package:image_picker/image_picker.dart';
 import 'package:photo_manager/photo_manager.dart';
 
 Future<String?> showMediaPickerBottomSheet(
-    BuildContext context, {
-      final Color? backgroundColor,
-      final double? mediaWidgetWidth,
-      final double? mediaHorizontalSpacing,
-      final double? mediaVerticalSpacing,
-      final BorderRadius? mediaBorderRadius,
-      final BoxShape? mediaBoxShape,
-      final List<BoxShadow>? mediaBoxShadow,
-      final BoxFit? mediaFit,
-      final Border? mediaBorder,
-      final Color? mediaBackgroundColor,
-      final Color? mediaSkeletonShimmerColor,
-      final Color? mediaSkeletonBaseColor,
-      final HeaderWidget? headerWidget,
-      final MediaCropper? mediaCropper,
-      final bool? safeArea,
-    }) async {
-  if(kIsWeb){
+  BuildContext context, {
+  final Color? backgroundColor,
+  final double? mediaWidgetWidth,
+  final double? mediaHorizontalSpacing,
+  final double? mediaVerticalSpacing,
+  final BorderRadius? mediaBorderRadius,
+  final BoxShape? mediaBoxShape,
+  final List<BoxShadow>? mediaBoxShadow,
+  final BoxFit? mediaFit,
+  final Border? mediaBorder,
+  final Color? mediaBackgroundColor,
+  final Color? mediaSkeletonShimmerColor,
+  final Color? mediaSkeletonBaseColor,
+  final HeaderWidget? headerWidget,
+  final MediaCropper? mediaCropper,
+  final bool? safeArea,
+}) async {
+  if (kIsWeb == false) {
     final PermissionState ps = await PhotoManager.requestPermissionExtend(
         requestOption: const PermissionRequestOption(
             iosAccessLevel: IosAccessLevel.addOnly));
@@ -57,11 +57,10 @@ Future<String?> showMediaPickerBottomSheet(
         ),
       );
     }
-  }
-   else {
+  } else {
     final ImagePicker picker = ImagePicker();
     picker.pickImage(source: ImageSource.gallery).then(
-          (image) {
+      (image) {
         if (image != null) {
           Navigator.push(
             context,
@@ -78,6 +77,5 @@ Future<String?> showMediaPickerBottomSheet(
       },
     );
   }
-
   return null;
 }
