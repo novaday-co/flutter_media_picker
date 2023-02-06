@@ -33,11 +33,10 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  String? selectedImagePath;
+  PickedMedia? pickedMedia;
 
   void _showMediaPickerModal() async {
-    selectedImagePath = await showMediaPickerBottomSheet(context);
-    print(selectedImagePath);
+    pickedMedia = await showMediaPickerBottomSheet(context);
     setState(() {});
   }
 
@@ -51,10 +50,10 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            if(selectedImagePath != null) SizedBox(
+            if(pickedMedia != null) SizedBox(
               height: 200,
               width: 200,
-              child: kIsWeb ? Image.network(selectedImagePath!):Image.file(File(selectedImagePath!),),
+              child: kIsWeb ? Image.network(pickedMedia!.path!):Image.file(File(pickedMedia!.path!),),
             ),
             TextButton(
               onPressed: _showMediaPickerModal,

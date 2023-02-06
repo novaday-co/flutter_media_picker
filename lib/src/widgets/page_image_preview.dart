@@ -11,6 +11,7 @@ import 'package:photo_view/photo_view.dart';
 class ImagePreviewPage extends StatefulWidget {
   final String imagePath;
   final String title;
+  final Uint8List? bytes;
   final MediaCropper? mediaCropper;
   final bool navigateFromCamera;
   final bool navigateFromImagePicker;
@@ -20,6 +21,7 @@ class ImagePreviewPage extends StatefulWidget {
     required this.imagePath,
     required this.title,
     this.mediaCropper,
+    this.bytes,
     this.navigateFromCamera = false,
     this.navigateFromImagePicker = false,
   }) : super(key: key);
@@ -29,13 +31,15 @@ class ImagePreviewPage extends StatefulWidget {
 }
 
 class _ImagePreviewPageState extends State<ImagePreviewPage> {
-  String imagePath = "";
+  PickedMedia pickedMedia = PickedMedia();
 
   @override
   void initState() {
     super.initState();
-    imagePath = widget.imagePath;
-    print(imagePath);
+    pickedMedia = PickedMedia(
+      bytes: widget.bytes,
+      path: widget.imagePath,
+    );
   }
 
   @override
@@ -47,7 +51,7 @@ class _ImagePreviewPageState extends State<ImagePreviewPage> {
           PhotoView.customChild(
             minScale: PhotoViewComputedScale.contained,
             maxScale: PhotoViewComputedScale.contained.multiplier,
-            child: kIsWeb ? Image.network(imagePath):Image.file(File(imagePath)),
+            child: kIsWeb ? Image.network(pickedMedia.path ?? ""):Image.file(File(pickedMedia.path ?? "")),
           ),
 
           Align(
@@ -95,7 +99,7 @@ class _ImagePreviewPageState extends State<ImagePreviewPage> {
                       ),
                       child: InkWell(
                         onTap: () {
-                          onApproveImage(imagePath);
+                          onApproveImage();
                         },
                         child: const Icon(
                           Icons.check,
@@ -113,27 +117,26 @@ class _ImagePreviewPageState extends State<ImagePreviewPage> {
     );
   }
 
-  void onApproveImage(String path) async {
+  void onApproveImage() async {
     final navigator = Navigator.of(context);
-    String imagePath = path;
     if (widget.navigateFromImagePicker) {
-      Navigator.pop(context, imagePath);
+      Navigator.pop(context, pickedMedia);
     } else {
       if (widget.mediaCropper?.compressPicture ?? false) {
-        imagePath = await compressImage(path) ?? "";
+        pickedMedia.path = await compressImage(pickedMedia.path ?? "") ?? "";
       }
       if (widget.navigateFromCamera) {
         navigator.pop();
       }
       navigator
         ..pop()
-        ..pop(imagePath);
+        ..pop(pickedMedia);
     }
   }
 
   Future<void> _cropImage() async {
     ImageCropper().cropImage(
-      sourcePath: imagePath,
+      sourcePath: pickedMedia.path ?? "",
       compressFormat: ImageCompressFormat.jpg,
       compressQuality: 100,
       uiSettings: [
@@ -156,13 +159,13 @@ class _ImagePreviewPageState extends State<ImagePreviewPage> {
         WebUiSettings(
           context: context,
           presentStyle: CropperPresentStyle.dialog,
-          boundary: const CroppieBoundary(
-            width: 520,
-            height: 520,
+          boundary:  CroppieBoundary(
+            width: (MediaQuery.of(context).size.width * .8).toInt(),
+            height: (MediaQuery.of(context).size.width * .8).toInt(),
           ),
-          viewPort: const CroppieViewPort(
-            width: 480,
-            height: 480,
+          viewPort:  CroppieViewPort(
+            width: (MediaQuery.of(context).size.width * .72).toInt(),
+            height: (MediaQuery.of(context).size.width * .72).toInt(),
           ),
           enableResize: true,
           mouseWheelZoom: true,
@@ -171,11 +174,12 @@ class _ImagePreviewPageState extends State<ImagePreviewPage> {
           showZoomer: true,
         ),
       ],
-    ).then((croppedFile) {
+    ).then((croppedFile) async {
       if (croppedFile != null) {
-        imagePath = croppedFile.path;
+        pickedMedia.path = croppedFile.path;
+        pickedMedia.bytes = await croppedFile.readAsBytes();
         if (widget.mediaCropper?.saveCroppedImage ?? false) {
-          saveImageInGallery(imagePath);
+          saveImageInGallery(pickedMedia.path ?? "");
         }
         setState(() {});
       }
