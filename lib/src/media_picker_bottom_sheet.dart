@@ -59,10 +59,10 @@ Future<String?> showMediaPickerBottomSheet(
     }
   } else {
     final ImagePicker picker = ImagePicker();
-    picker.pickImage(source: ImageSource.gallery).then(
+    return picker.pickImage(source: ImageSource.gallery).then(
       (image) {
         if (image != null) {
-          Navigator.push(
+          return Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => ImagePreviewPage(
@@ -74,6 +74,7 @@ Future<String?> showMediaPickerBottomSheet(
             ),
           );
         }
+        return null;
       },
     );
   }
