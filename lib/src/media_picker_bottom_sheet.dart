@@ -65,6 +65,7 @@ Future<String?> showMediaPickerBottomSheet(
               builder: (context) => ImagePreviewPage(
                 imagePath: image.path,
                 title: "",
+                navigateFromImagePicker: true,
                 mediaCropper: mediaCropper,
               ),
             ),
