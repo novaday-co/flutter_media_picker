@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:flutter_media_picker/flutter_media_picker.dart';
@@ -11,6 +12,7 @@ class ImagePreviewPage extends StatefulWidget {
   final String title;
   final MediaCropper? mediaCropper;
   final bool navigateFromCamera;
+  final bool navigateFromImagePicker;
 
   const ImagePreviewPage({
     Key? key,
@@ -18,6 +20,7 @@ class ImagePreviewPage extends StatefulWidget {
     required this.title,
     this.mediaCropper,
     this.navigateFromCamera = false,
+    this.navigateFromImagePicker = false,
   }) : super(key: key);
 
   @override
@@ -114,15 +117,19 @@ class _ImagePreviewPageState extends State<ImagePreviewPage> {
   void onApproveImage(String path) async {
     final navigator = Navigator.of(context);
     String imagePath = path;
-    if (widget.mediaCropper?.compressPicture ?? false) {
-      imagePath = await compressImage(path) ?? "";
+    if (widget.navigateFromImagePicker) {
+      Navigator.pop(context, imagePath);
+    } else {
+      if (widget.mediaCropper?.compressPicture ?? false) {
+        imagePath = await compressImage(path) ?? "";
+      }
+      if (widget.navigateFromCamera) {
+        navigator.pop();
+      }
+      navigator
+        ..pop()
+        ..pop(imagePath);
     }
-    if (widget.navigateFromCamera) {
-      navigator.pop();
-    }
-    navigator
-      ..pop()
-      ..pop(imagePath);
   }
 
   Future<void> _cropImage() async {
@@ -167,7 +174,7 @@ class _ImagePreviewPageState extends State<ImagePreviewPage> {
     ).then((croppedFile) {
       if (croppedFile != null) {
         imagePath = croppedFile.path;
-        if(widget.mediaCropper?.saveCroppedImage ?? false){
+        if (widget.mediaCropper?.saveCroppedImage ?? false) {
           saveImageInGallery(imagePath);
         }
         setState(() {});
