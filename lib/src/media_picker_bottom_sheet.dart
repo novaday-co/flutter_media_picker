@@ -77,6 +77,5 @@ Future<String?> showMediaPickerBottomSheet(
       },
     );
   }
-
   return null;
 }
