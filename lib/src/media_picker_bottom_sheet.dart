@@ -71,6 +71,7 @@ Future<PickedMedia?> showMediaPickerBottomSheet(
             MaterialPageRoute(
               builder: (context) => ImagePreviewPage(
                 imagePath: image.path,
+                imageExtension: image.mimeType?.split("/").last??"jpg",
                 title: "",
                 bytes: bytes,
                 navigateFromImagePicker: true,

@@ -181,6 +181,7 @@ class _MediaPickerBottomSheetState extends State<MediaPickerBottomSheet> {
             MaterialPageRoute(
               builder: (context) => ImagePreviewPage(
                 imagePath: image.path,
+                imageExtension: image.path.split('.').last,
                 title: "",
                 mediaCropper: widget.mediaCropper,
               ),
@@ -205,6 +206,7 @@ class _MediaPickerBottomSheetState extends State<MediaPickerBottomSheet> {
               MaterialPageRoute(
                 builder: (context) => ImagePreviewPage(
                   imagePath: imageFile.path,
+                  imageExtension: imageFile.path.split('.').last,
                   title: "",
                   navigateFromCamera: true,
                   mediaCropper: widget.mediaCropper,
@@ -227,6 +229,7 @@ class _MediaPickerBottomSheetState extends State<MediaPickerBottomSheet> {
       MaterialPageRoute(
         builder: (context) => ImagePreviewPage(
           imagePath: medias[index].path!,
+          imageExtension: medias[index].path?.split('.').last??'jpg',
           title: "",
           mediaCropper: widget.mediaCropper,
         ),
