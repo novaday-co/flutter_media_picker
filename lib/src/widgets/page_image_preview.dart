@@ -10,6 +10,7 @@ import 'package:photo_view/photo_view.dart';
 
 class ImagePreviewPage extends StatefulWidget {
   final String imagePath;
+  final String imageExtension;
   final String title;
   final Uint8List? bytes;
   final MediaCropper? mediaCropper;
@@ -24,6 +25,7 @@ class ImagePreviewPage extends StatefulWidget {
     this.bytes,
     this.navigateFromCamera = false,
     this.navigateFromImagePicker = false,
+    required this.imageExtension,
   }) : super(key: key);
 
   @override
@@ -39,6 +41,7 @@ class _ImagePreviewPageState extends State<ImagePreviewPage> {
     pickedMedia = PickedMedia(
       bytes: widget.bytes,
       path: widget.imagePath,
+      extension: widget.imageExtension,
     );
   }
 
@@ -51,9 +54,10 @@ class _ImagePreviewPageState extends State<ImagePreviewPage> {
           PhotoView.customChild(
             minScale: PhotoViewComputedScale.contained,
             maxScale: PhotoViewComputedScale.contained.multiplier,
-            child: kIsWeb ? Image.network(pickedMedia.path ?? ""):Image.file(File(pickedMedia.path ?? "")),
+            child: kIsWeb
+                ? Image.network(pickedMedia.path ?? "")
+                : Image.file(File(pickedMedia.path ?? "")),
           ),
-
           Align(
             alignment: Alignment.topLeft,
             child: SafeArea(
@@ -124,6 +128,7 @@ class _ImagePreviewPageState extends State<ImagePreviewPage> {
     } else {
       if (widget.mediaCropper?.compressPicture ?? false) {
         pickedMedia.path = await compressImage(pickedMedia.path ?? "") ?? "";
+        pickedMedia.extension = "jpg";
       }
       pickedMedia.bytes = await File(pickedMedia.path!).readAsBytes();
       if (widget.navigateFromCamera) {
@@ -160,11 +165,11 @@ class _ImagePreviewPageState extends State<ImagePreviewPage> {
         WebUiSettings(
           context: context,
           presentStyle: CropperPresentStyle.dialog,
-          boundary:  CroppieBoundary(
+          boundary: CroppieBoundary(
             width: (MediaQuery.of(context).size.width * .8).toInt(),
             height: (MediaQuery.of(context).size.width * .8).toInt(),
           ),
-          viewPort:  CroppieViewPort(
+          viewPort: CroppieViewPort(
             width: (MediaQuery.of(context).size.width * .72).toInt(),
             height: (MediaQuery.of(context).size.width * .72).toInt(),
           ),
