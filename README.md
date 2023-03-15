@@ -6,6 +6,7 @@ The media picker widget is designed to resemble the media picker in Telegram, wi
 
 ## Getting Started
 
+### How to Install
 To use this package, add `flutter_media_picker` as a dependency in your `pubspec.yaml` file:
 ```
 dependencies:
@@ -13,6 +14,7 @@ dependencies:
 ```
 The latest stable version is: <img src="https://img.shields.io/pub/v/flutter_media_picker.svg" alt="Pub">
 
+#### Android
 add this lines to `AdroidManifest.xml` file :
 ```
 <manifest>
@@ -22,7 +24,30 @@ add this lines to `AdroidManifest.xml` file :
 
 ```
 
-Android 13 (Api 33) extra configs
+add this lines to `AdroidManifest.xml` in application tag  :
+```
+        <activity
+            android:name="com.yalantis.ucrop.UCropActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+
+```
+#### Web
+if you want run in Web you need add this lines to `index.html` File:
+```
+<head>
+  ....
+
+  <!-- Croppie -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.css" />
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/exif-js/2.3.0/exif.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.js"></script>
+
+  ....
+</head>
+
+```
+#### Android 13 (Api 33) extra configs
 ```
 <manifest>
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
@@ -46,9 +71,9 @@ You can show media picker bottom sheet .
 ```dart
     PickedMedia? pickedMedia;
 
-  void _showMediaPickerModal() async {
-    pickedMedia = await showMediaPickerBottomSheet(context);
-  }
+void _showMediaPickerModal() async {
+  pickedMedia = await showMediaPickerBottomSheet(context);
+}
 ```
 
 ## Options :
