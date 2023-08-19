@@ -9,7 +9,7 @@ environment:
 
 dependencies:
   bottom_sheet: ^3.1.1
-  photo_manager: ^2.1.4
+  photo_manager: ^2.7.1
   camera: ^0.10.0
   image_cropper: ^3.0.0
   flutter:
