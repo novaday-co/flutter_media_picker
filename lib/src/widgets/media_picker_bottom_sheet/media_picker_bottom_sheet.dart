@@ -6,16 +6,15 @@ import 'package:flutter_media_picker/src/models/media_model.dart';
 import 'package:flutter_media_picker/src/models/modal_header_model.dart';
 import 'package:flutter_media_picker/src/utils/context_extension.dart';
 import 'package:flutter_media_picker/src/utils/helpers.dart';
+import 'package:flutter_media_picker/src/widgets/gridview_skeleton_loading.dart';
 import 'package:flutter_media_picker/src/widgets/media_picker_bottom_sheet/widget_bottom_sheet_header.dart';
 import 'package:flutter_media_picker/src/widgets/page_camera.dart';
-import 'package:flutter_media_picker/src/widgets/gridview_skeleton_loading.dart';
 import 'package:flutter_media_picker/src/widgets/page_image_preview.dart';
 import 'package:flutter_media_picker/src/widgets/widget_medias_gridview.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:photo_manager/photo_manager.dart';
 
 class MediaPickerBottomSheet extends StatefulWidget {
-
   final ScrollController scrollController;
 
   final double? mediaWidgetWidth;
@@ -45,7 +44,6 @@ class MediaPickerBottomSheet extends StatefulWidget {
   final Color? mediaSkeletonShimmerColor;
 
   final MediaCropper? mediaCropper;
-
 
   const MediaPickerBottomSheet({
     Key? key,
@@ -95,7 +93,6 @@ class _MediaPickerBottomSheetState extends State<MediaPickerBottomSheet> {
     cameraController?.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -126,9 +123,10 @@ class _MediaPickerBottomSheetState extends State<MediaPickerBottomSheet> {
                     builder: (context, state, child) {
                       switch (state) {
                         case MediaState.loading:
-                          return  GridViewSkeletonLoading(
+                          return GridViewSkeletonLoading(
                             skeletonBaseColor: widget.mediaSkeletonBaseColor,
-                            skeletonShimmerColor: widget.mediaSkeletonShimmerColor,
+                            skeletonShimmerColor:
+                                widget.mediaSkeletonShimmerColor,
                           );
                         default:
                           return MediasGridView(
@@ -229,7 +227,7 @@ class _MediaPickerBottomSheetState extends State<MediaPickerBottomSheet> {
       MaterialPageRoute(
         builder: (context) => ImagePreviewPage(
           imagePath: medias[index].path!,
-          imageExtension: medias[index].path?.split('.').last??'jpg',
+          imageExtension: medias[index].path?.split('.').last ?? 'jpg',
           title: "",
           mediaCropper: widget.mediaCropper,
         ),
