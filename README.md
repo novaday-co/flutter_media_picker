@@ -1,39 +1,127 @@
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+# Flutter Media Picker Package
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/guides/libraries/writing-package-pages).
+This Flutter package provides a media picker widget that allows users to select images from their device's camera roll or gallery, as well as capture new photos using their device's camera.
 
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-library-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/developing-packages).
--->
+The media picker widget is designed to resemble the media picker in Telegram, with a preview of the camera viewfinder, a list of recently captured media, and a folder selector. Once the user selects a media item, a crop tool will appear to allow them to crop the image before submitting it.
 
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+## Getting Started
 
-## Features
+### How to Install
+To use this package, add `flutter_media_picker` as a dependency in your `pubspec.yaml` file:
+```
+dependencies:
+  flutter_media_picker: $latest_version
+```
+The latest stable version is: <img src="https://img.shields.io/pub/v/flutter_media_picker.svg" alt="Pub">
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+#### Android
+add this lines to `AdroidManifest.xml` file :
+```
+<manifest>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+</manifest>
 
-## Getting started
-
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
-
-## Usage
-
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
-
-```dart
-const like = 'sample';
 ```
 
-## Additional information
+add this lines to `AdroidManifest.xml` in application tag  :
+```
+        <activity
+            android:name="com.yalantis.ucrop.UCropActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+```
+#### Web
+if you want run in Web you need add this lines to `index.html` File:
+```
+<head>
+  ....
+
+  <!-- Croppie -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.css" />
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/exif-js/2.3.0/exif.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.js"></script>
+
+  ....
+</head>
+
+```
+#### Android 13 (Api 33) extra configs
+```
+<manifest>
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" /> 
+</manifest>
+```
+
+
+## Customizing the Media Picker
+
+
+Import the package in your Dart code:
+```
+import 'package:flutter_media_picker/flutter_media_picker.dart';
+```
+
+## Basic Usage :
+
+You can show media picker bottom sheet .
+
+```dart
+    PickedMedia? pickedMedia;
+
+void _showMediaPickerModal() async {
+  pickedMedia = await showMediaPickerBottomSheet(context);
+}
+```
+
+## Options :
+
+| Option       	               | Type                         	 | Description                         |
+|------------------------------|--------------------------------|-------------------------------------|
+| backgroundColor 	            | Color	                         | The background Color of Modal       |
+| headerWidget 	               | HeaderWidget	                  | customize all items in modal header |
+| mediaBorder	 	               | Border 	                       | Border of media item                |
+| mediaBorderRadius	 	         | BorderRadius 	                 | BorderRadius of media item          |
+| mediaBoxShadow	 	            | List BoxShadow 	               | The shadow  of media item           |
+| mediaBoxShape	 	             | BoxShape                       | The shape  of media item            |
+| mediaCropper	 	              | MediaCropper                   | customize media cropper             |
+| mediaFit	 	                  | Boxfit                         | BoxFit of media                     |
+| mediaHorizontalSpacing	 	    | double                         | Horizontal spacing between medias   |
+| mediaVerticalSpacing	 	      | double                         | Vertical spacing between medias     |
+| mediaWidgetWidth	 	          | double                         | width of media item                 |
+| mediaSkeletonBaseColor	 	    | Color                          | Base skeleton media color           |
+| mediaSkeletonShimmerColor	 	 | Color                          | Skeleton Shimmer color media        |
+
+## HeaderWidget :
+| Option       	                        | Type                         	 | Description                                 |
+|---------------------------------------|--------------------------------|---------------------------------------------|
+| iconsColor 	                          | Color	                         | the header icons color                      |
+| dropDownBackgroundColor 	             | Color	                         | the dropdown background color               |
+| dropDownButtonBackgroundColor 	       | Color	                         | the dropdown button background color        |
+| iconsBorderColor 	                    | Color	                         | the dropdown icons border color             |
+| dropDownSelectedItemBackgroundColor 	 | Color	                         | the dropdown selected item background color |
+| dropDownButtonTextStyle 	             | TextStyle	                     | the dropdown button text style              |
+| dropDownItemsTextStyle 	              | TextStyle	                     | the dropdown items text style               |
+| dropDownItemsTextStyle 	              | TextStyle	                     | the dropdown items text style               |
+
+## Media Cropper :
+| Option       	              | Type                         	 | Description                                                                        |
+|-----------------------------|--------------------------------|------------------------------------------------------------------------------------|
+| backgroundColor 	           | Color	                         | the background color of the media cropper page (default is the primary app color)  |
+| activeControlsWidgetColor 	 | Color	                         | the  color of the active bottom navigation icon (default is the primary app color) |
+| toolBarColor 	              | Color	                         | the  color of toolbar cropper page (default is the black)                          |
+| toolbarWidgetColor 	        | Color	                         | the  color of all items in toolbar cropper page (default is the white)             |
+| cropFrameColor 	            | Color	                         | the  color of frame cropper                                                        |
+| cropFrameStrokeWidth 	      | int	                           | the width of frame cropper                                                         |
+| compressPercentage 	        | Function(double)	              |                                                                                    |
+| compressPicture 	           | bool	                          | compress image                                                                     |
+| saveCroppedImage 	          | bool	                          | save cropped image or no?                                                          |
+
+
+## Contributing
+Contributions are welcome! Please feel free to open an issue or submit a pull request if you find a bug or have a feature request.
+
+## License
+This package is licensed under the MIT License. See the LICENSE file for details.
