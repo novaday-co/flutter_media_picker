@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_media_picker/src/models/media_model.dart';
 import 'package:photo_manager/photo_manager.dart';
+import 'package:photo_manager_image_provider/photo_manager_image_provider.dart';
 
 class MediaWidget extends StatelessWidget {
   /// Required params which will be handled in package

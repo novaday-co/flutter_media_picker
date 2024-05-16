@@ -32,7 +32,6 @@ class MediaPickerDropDown extends StatelessWidget {
   Widget build(BuildContext context) {
     return DropdownButtonHideUnderline(
       child: DropdownButtonFormField2(
-        icon: const SizedBox(),
         customButton: Padding(
           padding: const EdgeInsets.only(bottom: 4.0),
           child: Row(
@@ -44,7 +43,8 @@ class MediaPickerDropDown extends StatelessWidget {
                   items[selectedItemIndex].toString(),
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,
-                  style: dropDownButtonTextStyle ?? const TextStyle(fontSize: 18),
+                  style:
+                      dropDownButtonTextStyle ?? const TextStyle(fontSize: 18),
                 ),
               ),
               const SizedBox(
@@ -60,7 +60,7 @@ class MediaPickerDropDown extends StatelessWidget {
         ),
         decoration: InputDecoration(
           fillColor: dropDownButtonBackgroundColor,
-          filled: dropDownButtonBackgroundColor != null ? true:false,
+          filled: dropDownButtonBackgroundColor != null ? true : false,
           contentPadding:
               const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
           constraints: const BoxConstraints(),
@@ -82,7 +82,6 @@ class MediaPickerDropDown extends StatelessWidget {
             borderSide: BorderSide.none,
           ),
         ),
-        dropdownOverButton: true,
         // customItemsHeight: 36,
         items: items
             .map((item) => DropdownMenuItem(
@@ -96,17 +95,23 @@ class MediaPickerDropDown extends StatelessWidget {
             .toList(),
         onChanged: onChanged,
         isExpanded: false,
-        selectedItemHighlightColor: selectedItemBackgroundColor ?? Colors.blue,
-        buttonHeight: 45,
-        buttonWidth: 250,
+        dropdownStyleData: DropdownStyleData(
+          width: width ?? 260,
+          maxHeight: 350,
+          offset: const Offset(0, -30),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: dropDownItemsBackgroundColor,
+          ),
+          isOverButton: true,
+        ),
+        buttonStyleData: const ButtonStyleData(
+          width: 250,
+          height: 45,
+        ),
         value: selectedItemIndex != -1 ? selectedItemIndex : null,
-        itemPadding: const EdgeInsets.symmetric(horizontal: 8),
-        dropdownWidth: width ?? 260,
-        dropdownMaxHeight: 350,
-        offset: const Offset(0, -30),
-        dropdownDecoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          color: dropDownItemsBackgroundColor,
+        menuItemStyleData: const MenuItemStyleData(
+          padding: EdgeInsets.symmetric(horizontal: 8),
         ),
       ),
     );
