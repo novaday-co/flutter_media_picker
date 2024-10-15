@@ -5,9 +5,9 @@ class CameraWidget extends StatelessWidget {
   final CameraController cameraController;
 
   const CameraWidget({
-    Key? key,
+    super.key,
     required this.cameraController,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

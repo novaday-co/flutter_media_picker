@@ -15,7 +15,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:photo_manager/photo_manager.dart';
 
 class MediaPickerBottomSheet extends StatefulWidget {
-
   final ScrollController scrollController;
 
   final double? mediaWidgetWidth;
@@ -46,9 +45,8 @@ class MediaPickerBottomSheet extends StatefulWidget {
 
   final MediaCropper? mediaCropper;
 
-
   const MediaPickerBottomSheet({
-    Key? key,
+    super.key,
     required this.scrollController,
     this.mediaWidgetWidth,
     this.mediaHorizontalSpacing,
@@ -64,15 +62,15 @@ class MediaPickerBottomSheet extends StatefulWidget {
     this.headerWidget,
     this.mediaSkeletonBaseColor,
     this.mediaSkeletonShimmerColor,
-  }) : super(key: key);
+  });
 
   @override
-  _MediaPickerBottomSheetState createState() => _MediaPickerBottomSheetState();
+  State<MediaPickerBottomSheet> createState() => _MediaPickerBottomSheetState();
 }
 
 class _MediaPickerBottomSheetState extends State<MediaPickerBottomSheet> {
-  GlobalKey modalKey = GlobalKey();
-  ValueNotifier<MediaState> mediaState = ValueNotifier(MediaState.success);
+  final modalKey = GlobalKey();
+  final mediaState = ValueNotifier(MediaState.success);
   List<CameraDescription>? cameras;
   CameraController? cameraController;
   List<AssetPathEntity> paths = [];
@@ -95,7 +93,6 @@ class _MediaPickerBottomSheetState extends State<MediaPickerBottomSheet> {
     cameraController?.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -103,7 +100,7 @@ class _MediaPickerBottomSheetState extends State<MediaPickerBottomSheet> {
       margin: EdgeInsets.only(top: AppBar().preferredSize.height),
       child: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8),
+          padding: const EdgeInsets.all(8),
           child: Column(
             key: modalKey,
             children: [
@@ -126,9 +123,10 @@ class _MediaPickerBottomSheetState extends State<MediaPickerBottomSheet> {
                     builder: (context, state, child) {
                       switch (state) {
                         case MediaState.loading:
-                          return  GridViewSkeletonLoading(
+                          return GridViewSkeletonLoading(
                             skeletonBaseColor: widget.mediaSkeletonBaseColor,
-                            skeletonShimmerColor: widget.mediaSkeletonShimmerColor,
+                            skeletonShimmerColor:
+                                widget.mediaSkeletonShimmerColor,
                           );
                         default:
                           return MediasGridView(
@@ -229,7 +227,7 @@ class _MediaPickerBottomSheetState extends State<MediaPickerBottomSheet> {
       MaterialPageRoute(
         builder: (context) => ImagePreviewPage(
           imagePath: medias[index].path!,
-          imageExtension: medias[index].path?.split('.').last??'jpg',
+          imageExtension: medias[index].path?.split('.').last ?? 'jpg',
           title: "",
           mediaCropper: widget.mediaCropper,
         ),

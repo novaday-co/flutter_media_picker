@@ -16,20 +16,19 @@ class ModalHeader extends StatelessWidget {
   final HeaderWidget? headerWidget;
 
   const ModalHeader({
-    Key? key,
+    super.key,
     required this.paths,
     required this.onChangePath,
     required this.selectedDropDownItemIndex,
     required this.onOpenGallery,
     required this.crossFadeState,
     this.headerWidget,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
-
-    if(headerWidget?.headerBuilder != null){
-      return headerWidget!.headerBuilder!.call(paths,onChangePath);
+    if (headerWidget?.headerBuilder != null) {
+      return headerWidget!.headerBuilder!.call(paths, onChangePath);
     }
 
     return AnimatedCrossFade(
@@ -74,19 +73,20 @@ class ModalHeader extends StatelessWidget {
               ),
               Expanded(
                 child: MediaPickerDropDown(
-                  items: [
-                    ...paths.map((e) => e).toList(),
-                  ],
+                  items: [...paths.map((e) => e).toList()],
                   onChanged: (index) {
                     if (index != null) onChangePath.call(index);
                   },
-                  dropDownButtonBackgroundColor: headerWidget?.dropDownButtonBackgroundColor,
+                  dropDownButtonBackgroundColor:
+                      headerWidget?.dropDownButtonBackgroundColor,
                   selectedItemBackgroundColor:
-                  headerWidget?.dropDownSelectedItemBackgroundColor,
+                      headerWidget?.dropDownSelectedItemBackgroundColor,
                   selectedItemIndex: selectedDropDownItemIndex,
                   hintText: "choose media",
-                  dropDownItemsBackgroundColor: headerWidget?.dropDownBackgroundColor,
-                  dropDownButtonTextStyle: headerWidget?.dropDownButtonTextStyle,
+                  dropDownItemsBackgroundColor:
+                      headerWidget?.dropDownBackgroundColor,
+                  dropDownButtonTextStyle:
+                      headerWidget?.dropDownButtonTextStyle,
                   dropDownItemsTextStyle: headerWidget?.dropDownItemsTextStyle,
                 ),
               ),
@@ -105,12 +105,11 @@ class ModalHeader extends StatelessWidget {
                   ),
                 ],
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15)),
+                  borderRadius: BorderRadius.circular(15),
+                ),
                 offset: const Offset(0, 40),
                 color: headerWidget?.dropDownBackgroundColor,
-                onSelected: (index) {
-                  onOpenGallery.call();
-                },
+                onSelected: (index) => onOpenGallery.call(),
                 child: Container(
                   height: 40,
                   width: 40,
