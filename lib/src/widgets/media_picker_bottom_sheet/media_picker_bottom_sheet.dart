@@ -46,7 +46,7 @@ class MediaPickerBottomSheet extends StatefulWidget {
   final MediaCropper? mediaCropper;
 
   const MediaPickerBottomSheet({
-    Key? key,
+    super.key,
     required this.scrollController,
     this.mediaWidgetWidth,
     this.mediaHorizontalSpacing,
@@ -62,15 +62,15 @@ class MediaPickerBottomSheet extends StatefulWidget {
     this.headerWidget,
     this.mediaSkeletonBaseColor,
     this.mediaSkeletonShimmerColor,
-  }) : super(key: key);
+  });
 
   @override
-  _MediaPickerBottomSheetState createState() => _MediaPickerBottomSheetState();
+  State<MediaPickerBottomSheet> createState() => _MediaPickerBottomSheetState();
 }
 
 class _MediaPickerBottomSheetState extends State<MediaPickerBottomSheet> {
-  GlobalKey modalKey = GlobalKey();
-  ValueNotifier<MediaState> mediaState = ValueNotifier(MediaState.success);
+  final modalKey = GlobalKey();
+  final mediaState = ValueNotifier(MediaState.success);
   List<CameraDescription>? cameras;
   CameraController? cameraController;
   List<AssetPathEntity> paths = [];
@@ -100,7 +100,7 @@ class _MediaPickerBottomSheetState extends State<MediaPickerBottomSheet> {
       margin: EdgeInsets.only(top: AppBar().preferredSize.height),
       child: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8),
+          padding: const EdgeInsets.all(8),
           child: Column(
             key: modalKey,
             children: [

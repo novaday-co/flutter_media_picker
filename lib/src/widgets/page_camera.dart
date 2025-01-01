@@ -8,11 +8,11 @@ class CameraPage extends StatefulWidget {
   CameraController? cameraController;
 
   CameraPage({
-    Key? key,
+    super.key,
     required this.onNavigate,
     this.cameras,
     this.cameraController,
-  }) : super(key: key);
+  });
 
   @override
   State<CameraPage> createState() => _CameraPageState();

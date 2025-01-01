@@ -8,10 +8,10 @@ class GridViewSkeletonLoading extends StatelessWidget {
   final Color? skeletonShimmerColor;
 
   const GridViewSkeletonLoading({
-    Key? key,
+    super.key,
     this.skeletonShimmerColor,
     this.skeletonBaseColor,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

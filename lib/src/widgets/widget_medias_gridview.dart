@@ -28,7 +28,7 @@ class MediasGridView extends StatelessWidget {
   final Color? mediaBackgroundColor;
 
   const MediasGridView({
-    Key? key,
+    super.key,
     required this.cameraController,
     required this.medias,
     required this.onSelectMedia,
@@ -43,7 +43,7 @@ class MediasGridView extends StatelessWidget {
     this.mediaFit,
     this.mediaBorder,
     this.mediaBackgroundColor,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

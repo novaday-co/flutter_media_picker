@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_media_picker/src/models/media_model.dart';
-import 'package:photo_manager/photo_manager.dart';
+import 'dart:typed_data' as type;
 
 class MediaWidget extends StatelessWidget {
   /// Required params which will be handled in package
@@ -22,7 +22,7 @@ class MediaWidget extends StatelessWidget {
   final Color? mediaBackgroundColor;
 
   const MediaWidget({
-    Key? key,
+    super.key,
     required this.onSelect,
     required this.media,
     this.borderRadius,
@@ -31,8 +31,7 @@ class MediaWidget extends StatelessWidget {
     this.mediaFit,
     this.mediaBorder,
     this.mediaBackgroundColor,
-  })  : assert(borderRadius != null && boxShape != BoxShape.circle),
-        super(key: key);
+  }) : assert(borderRadius != null && boxShape != BoxShape.circle);
 
   @override
   Widget build(BuildContext context) {
@@ -52,13 +51,30 @@ class MediaWidget extends StatelessWidget {
           builder: (context, mediaState, child) {
             switch (mediaState) {
               case MediaState.success:
-                return AssetEntityImage(
-                  media.assetEntity!,
-                  isOriginal: false,
-                  fit: BoxFit.cover,
-                  thumbnailSize: const ThumbnailSize.square(200),
-                  thumbnailFormat: ThumbnailFormat.jpeg,
+                return FutureBuilder<type.Uint8List?>(
+                  future: media.assetEntity!.thumbnailData,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const SizedBox();
+                    } else {
+                      return Container(
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            fit: mediaFit,
+                            image: MemoryImage(snapshot.data!),
+                          ),
+                        ),
+                      );
+                    }
+                  },
                 );
+              // return AssetEntityImage(
+              //   media.assetEntity!,
+              //   isOriginal: false,
+              //   fit: BoxFit.cover,
+              //   thumbnailSize: const ThumbnailSize.square(200),
+              //   thumbnailFormat: ThumbnailFormat.jpeg,
+              // );
               default:
                 return const SizedBox();
             }

@@ -8,23 +8,24 @@ environment:
   flutter: ">=1.17.0"
 
 dependencies:
-  bottom_sheet: ^3.1.1
-  photo_manager: ^2.7.1
-  camera: ^0.10.0
-  image_cropper: ^3.0.0
+  bottom_sheet: ^4.0.4
+  photo_manager: ^3.2.3
+  camera: ^0.11.0+2
+  image_cropper: ^6.0.0
   flutter:
     sdk: flutter
-  dropdown_button2: ^1.7.2
-  skeleton_text: ^3.0.0
-  image_picker: ^0.8.5+3
-  flutter_image_compress: ^1.1.1
-  gallery_saver: ^2.3.2
-  photo_view: ^0.14.0
+  dropdown_button2: ^3.0.0-beta.19
+  skeleton_text: ^3.0.1
+  image_picker: ^1.1.2
+  flutter_image_compress: ^2.3.0
+  gallery_saver_plus: ^3.1.1
+#  gallery_saver: ^2.3.2
+  photo_view: ^0.15.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.0
+  flutter_lints: ^4.0.0
 
 dependency_overrides:
   camera_android:

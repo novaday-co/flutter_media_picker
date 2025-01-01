@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
@@ -18,7 +17,7 @@ class ImagePreviewPage extends StatefulWidget {
   final bool navigateFromImagePicker;
 
   const ImagePreviewPage({
-    Key? key,
+    super.key,
     required this.imagePath,
     required this.title,
     this.mediaCropper,
@@ -26,7 +25,7 @@ class ImagePreviewPage extends StatefulWidget {
     this.navigateFromCamera = false,
     this.navigateFromImagePicker = false,
     required this.imageExtension,
-  }) : super(key: key);
+  });
 
   @override
   State<ImagePreviewPage> createState() => _ImagePreviewPageState();
@@ -63,9 +62,7 @@ class _ImagePreviewPageState extends State<ImagePreviewPage> {
             child: SafeArea(
               child: IconButton(
                 padding: const EdgeInsets.all(16),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
+                onPressed: () => Navigator.pop(context),
                 icon: const Icon(
                   Icons.arrow_back_rounded,
                   color: Colors.white,
@@ -78,15 +75,12 @@ class _ImagePreviewPageState extends State<ImagePreviewPage> {
             alignment: Alignment.bottomCenter,
             child: SafeArea(
               child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16),
+                padding: const EdgeInsets.all(16),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     InkWell(
-                      onTap: () {
-                        _cropImage();
-                      },
+                      onTap: () => _cropImage(),
                       child: const Icon(
                         Icons.crop,
                         size: 30,
@@ -102,9 +96,7 @@ class _ImagePreviewPageState extends State<ImagePreviewPage> {
                         shape: BoxShape.circle,
                       ),
                       child: InkWell(
-                        onTap: () {
-                          onApproveImage();
-                        },
+                        onTap: () => onApproveImage(),
                         child: const Icon(
                           Icons.check,
                           color: Colors.white,
@@ -165,6 +157,11 @@ class _ImagePreviewPageState extends State<ImagePreviewPage> {
         WebUiSettings(
           context: context,
           presentStyle: CropperPresentStyle.dialog,
+          //presentStyle: WebPresentStyle.dialog,
+          // size: CropperSize(
+          //   width: (MediaQuery.of(context).size.width * .7).toInt(),
+          //   height: (MediaQuery.of(context).size.height * .6).toInt(),
+          // ),
           boundary: CroppieBoundary(
             width: (MediaQuery.of(context).size.width * .7).toInt(),
             height: (MediaQuery.of(context).size.height * .6).toInt(),
@@ -173,6 +170,9 @@ class _ImagePreviewPageState extends State<ImagePreviewPage> {
             width: (MediaQuery.of(context).size.width * .6).toInt(),
             height: (MediaQuery.of(context).size.height * .5).toInt(),
           ),
+          //cropBoxResizable: true,
+          //zoomOnWheel: true,
+          //zoomable: true,
           enableResize: true,
           mouseWheelZoom: true,
           enableExif: true,
