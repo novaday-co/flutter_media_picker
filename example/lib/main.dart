@@ -31,7 +31,7 @@ class _MyHomePageState extends State<MyHomePage> {
   PickedMedia? pickedMedia;
 
   void _showMediaPickerModal() async {
-    pickedMedia = await showMediaPickerBottomSheet(context);
+    pickedMedia = await showMediaPickerBottomSheet(context, isActiveCrop: true);
     setState(() {});
   }
 

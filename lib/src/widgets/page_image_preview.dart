@@ -15,6 +15,7 @@ class ImagePreviewPage extends StatefulWidget {
   final MediaCropper? mediaCropper;
   final bool navigateFromCamera;
   final bool navigateFromImagePicker;
+  final bool isActiveCrop;
 
   const ImagePreviewPage({
     super.key,
@@ -25,6 +26,7 @@ class ImagePreviewPage extends StatefulWidget {
     this.navigateFromCamera = false,
     this.navigateFromImagePicker = false,
     required this.imageExtension,
+    required this.isActiveCrop,
   });
 
   @override
@@ -79,14 +81,16 @@ class _ImagePreviewPageState extends State<ImagePreviewPage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    InkWell(
-                      onTap: () => _cropImage(),
-                      child: const Icon(
-                        Icons.crop,
-                        size: 30,
-                        color: Colors.white,
-                      ),
-                    ),
+                    widget.isActiveCrop
+                        ? InkWell(
+                            onTap: () => _cropImage(),
+                            child: const Icon(
+                              Icons.crop,
+                              size: 30,
+                              color: Colors.white,
+                            ),
+                          )
+                        : const SizedBox(),
                     const Spacer(),
                     Container(
                       height: 60,

@@ -24,6 +24,7 @@ Future<PickedMedia?> showMediaPickerBottomSheet(
   final HeaderWidget? headerWidget,
   final MediaCropper? mediaCropper,
   final bool? safeArea,
+  required bool isActiveCrop,
 }) async {
   if (kIsWeb == false) {
     final PermissionState ps = await PhotoManager.requestPermissionExtend(
@@ -54,6 +55,7 @@ Future<PickedMedia?> showMediaPickerBottomSheet(
           headerWidget: headerWidget,
           mediaSkeletonShimmerColor: mediaSkeletonShimmerColor,
           mediaSkeletonBaseColor: mediaSkeletonBaseColor,
+          isActiveCrop: isActiveCrop,
         ),
       );
     }
@@ -73,6 +75,7 @@ Future<PickedMedia?> showMediaPickerBottomSheet(
                 bytes: bytes,
                 navigateFromImagePicker: true,
                 mediaCropper: mediaCropper,
+                isActiveCrop: isActiveCrop,
               ),
             ),
           );

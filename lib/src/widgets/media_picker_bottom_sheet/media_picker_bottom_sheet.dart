@@ -45,6 +45,8 @@ class MediaPickerBottomSheet extends StatefulWidget {
 
   final MediaCropper? mediaCropper;
 
+  final bool isActiveCrop;
+
   const MediaPickerBottomSheet({
     super.key,
     required this.scrollController,
@@ -62,6 +64,7 @@ class MediaPickerBottomSheet extends StatefulWidget {
     this.headerWidget,
     this.mediaSkeletonBaseColor,
     this.mediaSkeletonShimmerColor,
+    required this.isActiveCrop,
   });
 
   @override
@@ -182,6 +185,7 @@ class _MediaPickerBottomSheetState extends State<MediaPickerBottomSheet> {
                 imageExtension: image.path.split('.').last,
                 title: "",
                 mediaCropper: widget.mediaCropper,
+                isActiveCrop: widget.isActiveCrop,
               ),
             ),
           );
@@ -208,6 +212,7 @@ class _MediaPickerBottomSheetState extends State<MediaPickerBottomSheet> {
                   title: "",
                   navigateFromCamera: true,
                   mediaCropper: widget.mediaCropper,
+                  isActiveCrop: widget.isActiveCrop,
                 ),
               ),
             );
@@ -230,6 +235,7 @@ class _MediaPickerBottomSheetState extends State<MediaPickerBottomSheet> {
           imageExtension: medias[index].path?.split('.').last ?? 'jpg',
           title: "",
           mediaCropper: widget.mediaCropper,
+          isActiveCrop: widget.isActiveCrop,
         ),
       ),
     );
