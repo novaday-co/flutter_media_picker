@@ -160,22 +160,28 @@ class _ImagePreviewPageState extends State<ImagePreviewPage> {
         ),
         WebUiSettings(
           context: context,
-          presentStyle: WebPresentStyle.dialog,
-          size: CropperSize(
-            width: (MediaQuery.of(context).size.width * .7).toInt(),
-            height: (MediaQuery.of(context).size.height * .6).toInt(),
-          ),
-          // boundary: CroppieBoundary(
+          presentStyle: CropperPresentStyle.dialog,
+          //presentStyle: WebPresentStyle.dialog,
+          // size: CropperSize(
           //   width: (MediaQuery.of(context).size.width * .7).toInt(),
           //   height: (MediaQuery.of(context).size.height * .6).toInt(),
           // ),
-          // viewPort: CroppieViewPort(
-          //   width: (MediaQuery.of(context).size.width * .6).toInt(),
-          //   height: (MediaQuery.of(context).size.height * .5).toInt(),
-          // ),
-          cropBoxResizable: true,
-          zoomOnWheel: true,
-          zoomable: true,
+          boundary: CroppieBoundary(
+            width: (MediaQuery.of(context).size.width * .7).toInt(),
+            height: (MediaQuery.of(context).size.height * .6).toInt(),
+          ),
+          viewPort: CroppieViewPort(
+            width: (MediaQuery.of(context).size.width * .6).toInt(),
+            height: (MediaQuery.of(context).size.height * .5).toInt(),
+          ),
+          //cropBoxResizable: true,
+          //zoomOnWheel: true,
+          //zoomable: true,
+          enableResize: true,
+          mouseWheelZoom: true,
+          enableExif: true,
+          enableZoom: true,
+          showZoomer: true,
         ),
       ],
     ).then((croppedFile) async {
