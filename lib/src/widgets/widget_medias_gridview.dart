@@ -82,8 +82,8 @@ class MediasGridView extends StatelessWidget {
     );
   }
 
-  int get _cameraIndexDifference{
-    if(cameraController != null){
+  int get _cameraIndexDifference {
+    if (cameraController != null) {
       return 1;
     }
     return 0;

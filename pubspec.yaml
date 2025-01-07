@@ -9,17 +9,16 @@ environment:
 
 dependencies:
   bottom_sheet: ^4.0.4
-  photo_manager: ^3.2.3
+  photo_manager: ^3.6.3
   camera: ^0.11.0+2
-  image_cropper: ^6.0.0
+  image_cropper: ^8.1.0
   flutter:
     sdk: flutter
-  dropdown_button2: ^3.0.0-beta.19
+  dropdown_button2: ^3.0.0-beta.21
   skeleton_text: ^3.0.1
   image_picker: ^1.1.2
-  flutter_image_compress: ^2.3.0
+  flutter_image_compress: ^2.4.0
   gallery_saver_plus: ^3.1.1
-  #  gallery_saver: ^2.3.2
   photo_view: ^0.15.0
 
 dev_dependencies:
