@@ -82,7 +82,7 @@ class ModalHeader extends StatelessWidget {
                   selectedItemBackgroundColor:
                       headerWidget?.dropDownSelectedItemBackgroundColor,
                   selectedItemIndex: selectedDropDownItemIndex,
-                  hintText: "choose media",
+                  hintText: "",
                   dropDownItemsBackgroundColor:
                       headerWidget?.dropDownBackgroundColor,
                   dropDownButtonTextStyle:
