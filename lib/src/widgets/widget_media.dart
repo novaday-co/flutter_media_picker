@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_media_picker/src/models/media_model.dart';
-import 'dart:typed_data' as type;
 
-class MediaWidget extends StatelessWidget {
+class MediaWidget extends StatefulWidget {
   /// Required params which will be handled in package
   final MediaModel media;
 
@@ -34,47 +33,57 @@ class MediaWidget extends StatelessWidget {
   }) : assert(borderRadius != null && boxShape != BoxShape.circle);
 
   @override
+  State<MediaWidget> createState() => _MediaWidgetState();
+}
+
+class _MediaWidgetState extends State<MediaWidget> {
+  final loadingNotifier = ValueNotifier<bool>(true);
+  var imageData;
+
+  @override
+  void initState() {
+    widget.media.assetEntity!.thumbnailData.then((value) {
+      imageData = value!;
+      loadingNotifier.value = false;
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: onSelect,
+      onTap: widget.onSelect,
       child: Container(
         clipBehavior: Clip.antiAlias,
         decoration: BoxDecoration(
-          color: mediaBackgroundColor,
-          borderRadius: borderRadius,
-          shape: boxShape ?? BoxShape.rectangle,
-          border: mediaBorder,
-          boxShadow: boxShadow,
+          color: widget.mediaBackgroundColor,
+          borderRadius: widget.borderRadius,
+          shape: widget.boxShape ?? BoxShape.rectangle,
+          border: widget.mediaBorder,
+          boxShadow: widget.boxShadow,
         ),
         child: ValueListenableBuilder<MediaState>(
-          valueListenable: media.mediaState,
+          valueListenable: widget.media.mediaState,
           builder: (context, mediaState, child) {
             switch (mediaState) {
               case MediaState.success:
-                return FutureBuilder<type.Uint8List?>(
-                  future: media.assetEntity!.thumbnailData,
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
+                return ValueListenableBuilder<bool>(
+                  valueListenable: loadingNotifier,
+                  builder: (context, value, child) {
+                    if (value) {
                       return const SizedBox();
                     } else {
                       return Container(
                         decoration: BoxDecoration(
                           image: DecorationImage(
-                            fit: mediaFit,
-                            image: MemoryImage(snapshot.data!),
+                            fit: widget.mediaFit,
+                            image: MemoryImage(imageData),
                           ),
                         ),
                       );
                     }
                   },
                 );
-              // return AssetEntityImage(
-              //   media.assetEntity!,
-              //   isOriginal: false,
-              //   fit: BoxFit.cover,
-              //   thumbnailSize: const ThumbnailSize.square(200),
-              //   thumbnailFormat: ThumbnailFormat.jpeg,
-              // );
               default:
                 return const SizedBox();
             }
